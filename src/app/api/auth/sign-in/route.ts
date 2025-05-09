@@ -47,7 +47,7 @@ export async function POST(req: NextRequest) {
 
     return success();
   } catch (err: unknown) {
-    console.log("Erro ao realizar login: ", err);
+    console.log("[POST /api/sign-in]", err);
     return error("Erro interno no servidor.", 500);
   }
 }

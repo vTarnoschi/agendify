@@ -7,13 +7,15 @@ import { formatZodError } from "~/lib/zod-utils";
 import { created, error, failure } from "~/lib/api-response";
 
 const signupSchema = z.object({
-  name: z
+  email: z
     .string()
-    .min(2, "Nome muito curto")
-    .max(50, "Nome muito longo")
-    .regex(/^[A-Za-zÀ-ÿ\s]+$/, "Nome deve conter apenas letras e espaços"),
-  email: z.string().email("Email inválido"),
-  password: z.string().min(6, "A senha deve ter no minímo 6 caracteres"),
+    .nonempty("Este campo é obrigatório")
+    .email("Email inválido"),
+  password: z
+    .string()
+    .nonempty("Este campo é obrigatório")
+    .min(6, "Senha muito curta"),
+  role: z.enum(["client", "provider"]),
 });
 
 export async function POST(req: NextRequest) {
@@ -25,7 +27,7 @@ export async function POST(req: NextRequest) {
     return failure("Dados inválidos", errors, 400);
   }
 
-  const { email, name, password } = parsed.data;
+  const { email, role, password } = parsed.data;
 
   try {
     const existingUser = await prisma.user.findUnique({ where: { email } });
@@ -36,7 +38,7 @@ export async function POST(req: NextRequest) {
     const hashedPassword = await hashPassword(password);
     const user = await prisma.user.create({
       data: {
-        name,
+        role,
         email,
         password: hashedPassword,
       },
@@ -44,7 +46,7 @@ export async function POST(req: NextRequest) {
 
     return created(req, user.id);
   } catch (err: unknown) {
-    console.log("Erro ao salvar usuário: ", err);
+    console.log("[POST /api/sign-up]", err);
     return error("Erro interno ao salvar usuário.", 500);
   }
 }

@@ -4,6 +4,8 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
+import Link from "next/link";
+
 import {
   Form,
   FormItem,
@@ -12,26 +14,21 @@ import {
   FormControl,
   FormMessage,
 } from "~/components/ui/form";
-
 import { Input } from "~/components/ui/input";
-
 import { Button } from "~/components/ui/button";
-
+import { RadioGroup, RadioGroupItem } from "~/components/ui/radio-group";
 import {
   Card,
+  CardTitle,
+  CardHeader,
   CardContent,
   CardDescription,
-  CardHeader,
-  CardTitle,
 } from "~/components/ui/card";
 
+import { useSignup } from "~/queries/use-sign-up";
+import { Loader2 } from "lucide-react";
+
 const signupSchema = z.object({
-  name: z
-    .string()
-    .nonempty("Este campo é obrigatório")
-    .min(2, "Nome muito curto")
-    .max(50, "Nome muito longo")
-    .regex(/^[A-Za-zÀ-ÿ\s]+$/, "Nome deve conter apenas letras e espaços"),
   email: z
     .string()
     .nonempty("Este campo é obrigatório")
@@ -40,6 +37,7 @@ const signupSchema = z.object({
     .string()
     .nonempty("Este campo é obrigatório")
     .min(6, "Senha muito curta"),
+  role: z.enum(["client", "provider"]),
 });
 
 type SignupFormSchemaType = z.infer<typeof signupSchema>;
@@ -48,14 +46,16 @@ export default function SignupPage() {
   const form = useForm<SignupFormSchemaType>({
     resolver: zodResolver(signupSchema),
     defaultValues: {
-      name: "",
       email: "",
       password: "",
+      role: "client",
     },
   });
 
+  const { mutate, isPending } = useSignup();
+
   const onSubmit = (values: SignupFormSchemaType) => {
-    console.log(values);
+    mutate(values);
   };
 
   return (
@@ -68,26 +68,17 @@ export default function SignupPage() {
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <FormField
-              name="name"
-              control={form.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Nome</FormLabel>
-                  <FormControl>
-                    <Input {...field} placeholder="Nome completo" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
               name="email"
               control={form.control}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input {...field} placeholder="email@example.com" />
+                    <Input
+                      {...field}
+                      autoComplete="username"
+                      placeholder="email@example.com"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -100,24 +91,62 @@ export default function SignupPage() {
                 <FormItem>
                   <FormLabel>Senha </FormLabel>
                   <FormControl>
-                    <Input {...field} type="password" />
+                    <Input
+                      {...field}
+                      type="password"
+                      autoComplete="current-password"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <Button type="submit" className="w-full mt-4">
+            <FormField
+              name="role"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem className="space-y-3">
+                  <FormLabel>Você é...</FormLabel>
+                  <FormControl>
+                    <RadioGroup
+                      defaultValue={field.value}
+                      onValueChange={field.onChange}
+                      className="flex flex-col space-y-1"
+                    >
+                      <FormItem className="flex items-center space-x-1 space-y-0">
+                        <FormControl>
+                          <RadioGroupItem value="client" />
+                        </FormControl>
+                        <FormLabel className="font-normal">Cliente</FormLabel>
+                      </FormItem>
+                      <FormItem className="flex items-center space-x-1 space-y-0">
+                        <FormControl>
+                          <RadioGroupItem value="provider" />
+                        </FormControl>
+                        <FormLabel className="font-normal">
+                          Prestador de serviços
+                        </FormLabel>
+                      </FormItem>
+                    </RadioGroup>
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+
+            <Button
+              type="submit"
+              disabled={isPending}
+              className="w-full mt-6 cursor-pointer"
+            >
+              {isPending && <Loader2 className="animate-spin" />}
               Criar conta
             </Button>
 
-            <div className="mt-4 text-center text-sm">
+            <div className="text-center text-sm">
               Já possui uma conta?{" "}
-              <a
-                href="/sign-in"
-                className="hover:underline underline-offset-4 text-blue-600"
-              >
+              <Link className="text-blue-600 hover:underline" href="/sign-in">
                 Entrar
-              </a>
+              </Link>
             </div>
           </form>
         </Form>
