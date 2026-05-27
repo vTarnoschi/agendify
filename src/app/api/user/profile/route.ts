@@ -1,35 +1,41 @@
-import { NextRequest } from "next/server";
+import { auth } from "@clerk/nextjs/server";
 
 import { prisma } from "~/lib/prisma";
-import { verifyToken } from "~/lib/auth";
 import { error, success } from "~/lib/api-response";
 
-export async function GET(req: NextRequest) {
-  const token = req.cookies.get("token")?.value;
-
-  if (!token) {
-    return error("Token não encontrado", 401);
-  }
-
-  const decoded = await verifyToken(token);
-  if (!decoded) {
-    return error("Token inválido", 401);
-  }
-
+export async function GET() {
   try {
+    const authObj = await auth();
+    const clerkId = authObj.userId;
+
+    if (!clerkId) {
+      return error("Não autorizado", 401);
+    }
+
     const user = await prisma.user.findUnique({
-      where: { id: decoded.id },
+      where: { clerkId },
       select: {
         id: true,
         name: true,
         email: true,
+        role: true,
+        slug: true,
+        workingDays: true,
+        workStart: true,
+        workEnd: true,
+        brandColor: true,
+        brandLogo: true,
         createdAt: true
       },
     });
 
+    if (!user) {
+      return error("Usuário não encontrado", 404);
+    }
+
     return success(user);
   } catch (err: unknown) {
-    console.log("Erro ao buscar o perfil do usuário: ", err);
+    console.error("Erro ao buscar o perfil do usuário: ", err);
     return error("Erro interno no servidor.", 500);
   }
 }

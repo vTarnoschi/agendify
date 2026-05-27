@@ -1,6 +1,6 @@
 "use client";
 
-import { Home, CalendarDays, Settings, Users, Command } from "lucide-react";
+import { Home, Settings, Users, CalendarCheck } from "lucide-react";
 
 import {
   Sidebar,
@@ -14,56 +14,51 @@ import {
 
 import { NavUser } from "~/components/nav-user";
 import { NavMain } from "~/components/nav-main";
+import { useRole } from "~/hooks/use-role";
 
 // Menu items.
 const data = {
-  user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
-  },
   items: [
     {
-      title: "Início",
-      url: "#",
+      title: "Visão Geral",
+      url: "/dashboard",
       icon: Home,
     },
     {
-      title: "Agendamentos",
-      url: "#",
-      icon: CalendarDays,
-    },
-    {
       title: "Clientes",
-      url: "#",
+      url: "/dashboard/clients",
       icon: Users,
+      providerOnly: true,
     },
     {
       title: "Configurações",
-      url: "#",
+      url: "/dashboard/settings",
       icon: Settings,
     },
   ],
 };
 
-interface AppSidebarProps {
-  user: {
-    name: string;
-    email: string;
-    avatar?: string;
-  };
-}
+export function AppSidebar() {
+  const { role: clerkRole } = useRole();
+  const role = clerkRole || "provider"; // Fallback para provider evita flicker durante carregamento do Clerk nas rotas do dashboard
 
-export function AppSidebar({ user }: AppSidebarProps) {
+  // Filtra os itens: se for providerOnly, o usuário deve ser provider
+  const filteredItems = data.items.filter((item) => {
+    if (item.providerOnly) {
+      return role === "provider";
+    }
+    return true;
+  });
+
   return (
-    <Sidebar collapsible="offcanvas" variant="inset">
+    <Sidebar collapsible="offcanvas">
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
               <a href="#">
                 <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-                  <Command className="size-4" />
+                  <CalendarCheck className="size-4" />
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-semibold">Agendify</span>
@@ -75,10 +70,10 @@ export function AppSidebar({ user }: AppSidebarProps) {
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.items} />
+        <NavMain items={filteredItems} />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={user} />
+        <NavUser />
       </SidebarFooter>
     </Sidebar>
   );

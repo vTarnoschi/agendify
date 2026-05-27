@@ -22,9 +22,14 @@ const faqs = [
       "Sim. Você poderá definir sua disponibilidade, dias da semana e horários diretamente no painel do prestador.",
   },
   {
-    question: "Clientes precisam criar conta?",
+    question: "Clientes precisam criar conta para agendar?",
     answer:
-      "Sim. O cadastro é rápido e necessário para que os clientes possam visualizar agendamentos, receber lembretes e gerenciar suas reservas.",
+      "Não! O processo foi simplificado. Os clientes podem realizar agendamentos fornecendo apenas informações básicas de contato (Nome, Telefone e E-mail), sem a necessidade de criar uma conta na plataforma.",
+  },
+  {
+    question: "Como funciona a integração com o Google Agenda do prestador?",
+    answer:
+      "O Agendify conecta-se de forma segura à conta Google do prestador de serviços. Isso permite checar a sua disponibilidade em tempo real para evitar conflitos de horários e adicionar automaticamente novos agendamentos à agenda do prestador.",
   },
 ];
 
@@ -41,16 +46,14 @@ export function FAQSection() {
       <Accordion
         type="single"
         collapsible
-        className="w-full space-y-4 max-w-3xl m-auto"
+        className="w-full flex flex-col gap-4 max-w-3xl mx-auto"
       >
-        <Accordion type="single" collapsible className="w-full space-y-4">
-          {faqs.map((faq, index) => (
-            <AccordionItem value={`item-${index}`} key={index}>
-              <AccordionTrigger>{faq.question}</AccordionTrigger>
-              <AccordionContent>{faq.answer}</AccordionContent>
-            </AccordionItem>
-          ))}
-        </Accordion>
+        {faqs.map((faq, index) => (
+          <AccordionItem value={`item-${index}`} key={index}>
+            <AccordionTrigger>{faq.question}</AccordionTrigger>
+            <AccordionContent>{faq.answer}</AccordionContent>
+          </AccordionItem>
+        ))}
       </Accordion>
     </section>
   );

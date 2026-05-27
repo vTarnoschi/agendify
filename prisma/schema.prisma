@@ -13,23 +13,52 @@ enum Role {
 }
 
 model User {
-  id          String        @id @default(auto()) @map("_id") @db.ObjectId
-  name        String?
-  email       String        @unique
-  password    String
-  role        Role
-  category    String?       // apenas para role='provider'
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @default(now())
-  appointment Appointment[]
+  id                 String        @id @default(auto()) @map("_id") @db.ObjectId
+  clerkId            String?       @unique
+  name               String?
+  email              String        @unique
+  slug               String?       @unique
+  businessName       String?
+  role               Role
+  category           String? // apenas para role='provider'
+  brandColor         String?
+  brandLogo          String?
+  workingDays        String[]      @default(["monday", "tuesday", "wednesday", "thursday", "friday"])
+  workStart          String        @default("09:00")
+  workEnd            String        @default("18:00")
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @default(now())
+  appointments       Appointment[] @relation("ClientAppointments")
+  providerAppointments Appointment[] @relation("ProviderAppointments")
+  services           Service[]
+}
+
+model Service {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  description String?
+  price       Float?
+  duration    Int      @default(30) // em minutos
+  providerId  String   @db.ObjectId
+  provider    User     @relation(fields: [providerId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
 }
 
 model Appointment {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  title       String
-  description String?
-  date        DateTime
-  userId      String   @db.ObjectId
-  user        User     @relation(fields: [userId], references: [id])
-  createdAt   DateTime @default(now())
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  title          String
+  description    String?
+  date           DateTime
+  userId         String?  @db.ObjectId
+  user           User?    @relation("ClientAppointments", fields: [userId], references: [id])
+  providerId     String   @db.ObjectId
+  provider       User     @relation("ProviderAppointments", fields: [providerId], references: [id])
+  googleEventId  String?
+  price          Float?
+  duration       Int?
+  clientName     String?  // Nome do visitante
+  clientEmail    String?  // Email do visitante
+  clientPhone    String?  // Telefone do visitante
+  createdAt      DateTime @default(now())
 }
