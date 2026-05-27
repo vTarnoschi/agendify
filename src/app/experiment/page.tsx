@@ -4,12 +4,12 @@ import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { ThemeFlavorToggle } from "~/components/theme-flavor-toggle";
 import { ThemeToggle } from "~/components/theme-toggle";
-import { Calendar as CalendarIcon, Clock, Link as LinkIcon, Search, LayoutDashboard, Settings, Users, Settings2, BellRing, User } from "lucide-react";
+import { Calendar as CalendarIcon, Link as LinkIcon, Search, LayoutDashboard, Users, Settings2, BellRing } from "lucide-react";
 
 export default function ExperimentPage() {
   return (
     <div className="min-h-screen bg-background text-foreground transition-colors duration-300 font-sans tracking-tight">
-      
+
       {/* Top Navigation */}
       <header className="sticky top-0 z-50 flex h-16 shrink-0 items-center justify-between border-b px-4 lg:px-8 bg-background/80 backdrop-blur-xl">
         <div className="flex items-center gap-3">
@@ -50,7 +50,7 @@ export default function ExperimentPage() {
 
         {/* Main Content Area */}
         <main className="flex-1 p-6 md:p-10 lg:p-12 space-y-16 max-w-6xl mx-auto">
-          
+
           {/* Section: Typography & Intro */}
           <section className="space-y-4">
             <h1 className="text-4xl md:text-5xl font-semibold tracking-tight">Midnight Orange V2</h1>
@@ -78,7 +78,7 @@ export default function ExperimentPage() {
               <span className="h-6 w-1 bg-primary rounded-full"></span>
               <h2 className="text-2xl font-semibold tracking-tight">Inputs & Onboarding</h2>
             </div>
-            
+
             <div className="grid md:grid-cols-2 gap-8">
               <Card className="card-midnight p-2">
                 <CardHeader>
@@ -126,7 +126,7 @@ export default function ExperimentPage() {
               <span className="h-6 w-1 bg-primary rounded-full"></span>
               <h2 className="text-2xl font-semibold tracking-tight">Métricas (Dashboard)</h2>
             </div>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <Card className="card-midnight shadow-none">
                 <CardHeader className="flex flex-row items-center justify-between pb-2">
@@ -169,10 +169,10 @@ export default function ExperimentPage() {
               <span className="h-6 w-1 bg-primary rounded-full"></span>
               <h2 className="text-2xl font-semibold tracking-tight">Calendário (Visitor View)</h2>
             </div>
-            
+
             <div className="max-w-xl p-8 rounded-[calc(var(--radius)+8px)] border bg-card midnight-shadow">
               <h3 className="text-lg font-medium mb-6">Escolha um horário</h3>
-              
+
               <div className="grid grid-cols-3 gap-3">
                 <button className="h-12 rounded-xl border border-border flex items-center justify-center font-medium hover:border-primary/50 hover:bg-accent transition-colors active:scale-[0.98]">
                   09:00

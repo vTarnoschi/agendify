@@ -1,7 +1,7 @@
 import { NextRequest } from "next/server";
 import { clerkClient } from "@clerk/nextjs/server";
 import { google } from "googleapis";
-import { addMinutes, format, parse, parseISO, startOfDay, endOfDay, isBefore } from "date-fns";
+import { addMinutes, parse, startOfDay, endOfDay } from "date-fns";
 
 import { prisma } from "~/lib/prisma";
 import { error, success } from "~/lib/api-response";

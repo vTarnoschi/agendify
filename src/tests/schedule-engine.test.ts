@@ -1,10 +1,9 @@
 import { describe, it, expect } from "vitest";
 import { calculateAvailableSlots } from "../lib/schedule-engine";
-import { parseISO } from "date-fns";
 
 describe("Schedule Engine", () => {
   // Use local time without 'Z' to avoid UTC offsets making the date jump to the previous day
-  const baseDate = new Date("2026-05-22T12:00:00"); 
+  const baseDate = new Date("2026-05-22T12:00:00");
 
   it("deve gerar horários básicos de 30 minutos", () => {
     const slots = calculateAvailableSlots({
@@ -13,7 +12,7 @@ describe("Schedule Engine", () => {
       workStart: "08:00",
       workEnd: "10:00",
       busySlots: [],
-      now: new Date("2026-05-21T12:00:00"), 
+      now: new Date("2026-05-21T12:00:00"),
     });
 
     expect(slots).toEqual(["08:00", "08:30", "09:00", "09:30"]);
