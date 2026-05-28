@@ -165,13 +165,19 @@ export function AppointmentsList({ state }: AppointmentsListProps) {
                       </AlertDialogTrigger>
                       <AlertDialogContent className="rounded-3xl border bg-background/95 backdrop-blur-md shadow-2xl animate-in zoom-in-95">
                         <AlertDialogHeader>
-                          <AlertDialogTitle className="text-xl font-bold">Cancelar agendamento</AlertDialogTitle>
+                          <AlertDialogTitle className="text-xl font-bold">
+                            Cancelar agendamento
+                          </AlertDialogTitle>
                           <AlertDialogDescription>
-                            Tem certeza que deseja cancelar este agendamento? Esta ação removerá o evento do Google Agenda e não poderá ser desfeita.
+                            Tem certeza que deseja cancelar este agendamento?
+                            Esta ação removerá o evento do Google Agenda e não
+                            poderá ser desfeita.
                           </AlertDialogDescription>
                         </AlertDialogHeader>
                         <AlertDialogFooter className="mt-4">
-                          <AlertDialogCancel className="rounded-xl border-border">Voltar</AlertDialogCancel>
+                          <AlertDialogCancel className="rounded-xl border-border">
+                            Voltar
+                          </AlertDialogCancel>
                           <AlertDialogAction
                             onClick={() => handleCancelAppointment(appt.id)}
                             className="rounded-xl bg-destructive text-destructive-foreground hover:bg-destructive/90 font-bold"

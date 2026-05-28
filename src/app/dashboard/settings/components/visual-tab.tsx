@@ -5,13 +5,26 @@ import {
   Trash2,
   Save,
   Loader2,
-  Image as ImageIcon
+  Image as ImageIcon,
 } from "lucide-react";
 import { Button } from "~/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "~/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "~/components/ui/card";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "~/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "~/components/ui/form";
 import { VisualFormType } from "../hooks/use-visual-form";
 
 interface VisualTabProps {
@@ -19,15 +32,10 @@ interface VisualTabProps {
 }
 
 export function VisualTab({ visualForm }: VisualTabProps) {
-  const {
-    form,
-    handleSubmit,
-    handleLogoUpload,
-    errorMsg,
-    loading,
-  } = visualForm;
+  const { form, handleSubmit, handleLogoUpload, errorMsg, loading } =
+    visualForm;
 
-  const brandColor = form.watch("brandColor") || "#7c3aed";
+  const brandColor = form.watch("brandColor") || "#18181b";
   const brandLogo = form.watch("brandLogo") || "";
 
   return (
@@ -38,20 +46,22 @@ export function VisualTab({ visualForm }: VisualTabProps) {
           Identidade Visual
         </CardTitle>
         <CardDescription>
-          Configure a cor do tema e a logomarca do seu negócio para sua página pública.
+          Configure a cor do tema e a logomarca do seu negócio para sua página
+          pública.
         </CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>
           <form onSubmit={handleSubmit} className="flex flex-col gap-6">
-
             {/* Seletor de Cores */}
             <FormField
               control={form.control}
               name="brandColor"
               render={({ field }) => (
                 <FormItem className="flex flex-col gap-3">
-                  <FormLabel className="font-semibold text-sm">Cor Temática da Marca</FormLabel>
+                  <FormLabel className="font-semibold text-sm">
+                    Cor Temática da Marca
+                  </FormLabel>
                   <FormControl>
                     <div className="flex flex-col gap-3">
                       <div className="grid grid-cols-4 sm:grid-cols-8 gap-2">
@@ -68,13 +78,23 @@ export function VisualTab({ visualForm }: VisualTabProps) {
                           <button
                             key={color.hex}
                             type="button"
-                            onClick={() => form.setValue("brandColor", color.hex, { shouldValidate: true })}
+                            onClick={() =>
+                              form.setValue("brandColor", color.hex, {
+                                shouldValidate: true,
+                              })
+                            }
                             title={color.name}
                             className="h-10 rounded-xl cursor-pointer transition-all duration-200 border-2 relative flex items-center justify-center"
                             style={{
                               backgroundColor: color.hex,
-                              borderColor: brandColor === color.hex ? "#ffffff" : "transparent",
-                              boxShadow: brandColor === color.hex ? "0 0 0 2px var(--primary)" : "none"
+                              borderColor:
+                                brandColor === color.hex
+                                  ? "#ffffff"
+                                  : "transparent",
+                              boxShadow:
+                                brandColor === color.hex
+                                  ? "0 0 0 2px var(--primary)"
+                                  : "none",
                             }}
                           >
                             {brandColor === color.hex && (
@@ -89,7 +109,11 @@ export function VisualTab({ visualForm }: VisualTabProps) {
                           <input
                             type="color"
                             value={brandColor}
-                            onChange={(e) => form.setValue("brandColor", e.target.value, { shouldValidate: true })}
+                            onChange={(e) =>
+                              form.setValue("brandColor", e.target.value, {
+                                shouldValidate: true,
+                              })
+                            }
                             className="absolute inset-0 cursor-pointer h-full w-full border-0 p-0"
                           />
                         </div>
@@ -98,7 +122,11 @@ export function VisualTab({ visualForm }: VisualTabProps) {
                             type="text"
                             placeholder="#7c3aed"
                             {...field}
-                            onChange={(e) => form.setValue("brandColor", e.target.value, { shouldValidate: true })}
+                            onChange={(e) =>
+                              form.setValue("brandColor", e.target.value, {
+                                shouldValidate: true,
+                              })
+                            }
                             className="h-10 uppercase font-mono text-sm"
                           />
                         </div>
@@ -116,7 +144,9 @@ export function VisualTab({ visualForm }: VisualTabProps) {
               name="brandLogo"
               render={() => (
                 <FormItem className="flex flex-col gap-3 border-t border-border pt-4">
-                  <FormLabel className="font-semibold text-sm">Logotipo ou Foto do Negócio</FormLabel>
+                  <FormLabel className="font-semibold text-sm">
+                    Logotipo ou Foto do Negócio
+                  </FormLabel>
                   <FormControl>
                     <div className="flex flex-col gap-4">
                       <div className="flex items-center gap-4">
@@ -148,7 +178,9 @@ export function VisualTab({ visualForm }: VisualTabProps) {
                             <Button
                               type="button"
                               variant="outline"
-                              onClick={() => document.getElementById("logoFile")?.click()}
+                              onClick={() =>
+                                document.getElementById("logoFile")?.click()
+                              }
                               className="cursor-pointer h-9 px-4 text-xs font-semibold rounded-xl border border-input hover:bg-accent hover:text-accent-foreground flex items-center gap-2"
                             >
                               <Plus className="h-3.5 w-3.5" />
@@ -160,7 +192,11 @@ export function VisualTab({ visualForm }: VisualTabProps) {
                             <Button
                               type="button"
                               variant="ghost"
-                              onClick={() => form.setValue("brandLogo", "", { shouldValidate: true })}
+                              onClick={() =>
+                                form.setValue("brandLogo", "", {
+                                  shouldValidate: true,
+                                })
+                              }
                               className="cursor-pointer h-8 px-3 text-[10px] font-bold text-destructive hover:bg-destructive/10 hover:text-destructive flex items-center gap-1.5 w-fit"
                             >
                               <Trash2 className="h-3 w-3" />
@@ -171,7 +207,10 @@ export function VisualTab({ visualForm }: VisualTabProps) {
                       </div>
 
                       <div className="flex flex-col gap-1">
-                        <Label htmlFor="logoUrl" className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider">
+                        <Label
+                          htmlFor="logoUrl"
+                          className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider"
+                        >
                           Ou digite uma URL externa
                         </Label>
                         <div className="relative">
@@ -180,8 +219,16 @@ export function VisualTab({ visualForm }: VisualTabProps) {
                             id="logoUrl"
                             type="url"
                             placeholder="https://sua-logo.com/imagem.png"
-                            value={brandLogo?.startsWith("data:") ? "" : brandLogo || ""}
-                            onChange={(e) => form.setValue("brandLogo", e.target.value, { shouldValidate: true })}
+                            value={
+                              brandLogo?.startsWith("data:")
+                                ? ""
+                                : brandLogo || ""
+                            }
+                            onChange={(e) =>
+                              form.setValue("brandLogo", e.target.value, {
+                                shouldValidate: true,
+                              })
+                            }
                             className="pl-8 h-9 text-xs"
                           />
                         </div>
@@ -190,7 +237,8 @@ export function VisualTab({ visualForm }: VisualTabProps) {
                   </FormControl>
                   <FormMessage className="text-xs font-semibold" />
                   <p className="text-[11px] text-muted-foreground leading-normal">
-                    Selecione uma foto direta de seu computador. Nós faremos a compressão otimizada automaticamente!
+                    Selecione uma foto direta de seu computador. Nós faremos a
+                    compressão otimizada automaticamente!
                   </p>
                 </FormItem>
               )}

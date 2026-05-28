@@ -2,12 +2,20 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { currentUser } from "@clerk/nextjs/server";
 import { UserButton } from "@clerk/nextjs";
-import { CalendarCheck, Clock, Users, Scissors, Dumbbell, Heart } from "lucide-react";
+import {
+  CalendarCheck,
+  Clock,
+  Users,
+  Scissors,
+  Dumbbell,
+  Heart,
+} from "lucide-react";
 
 import { Button } from "~/components/ui/button";
 import { Separator } from "~/components/ui/separator";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 
+import { PricingSection } from "./pricing-section";
 import { FAQSection } from "./faq-section";
 
 export default async function Home() {
@@ -34,43 +42,62 @@ export default async function Home() {
             </>
           ) : (
             <>
-              <Link href="/sign-in">
-                <Button variant="ghost">Entrar</Button>
-              </Link>
-              <Link href="/sign-up">
-                <Button>Criar Conta</Button>
-              </Link>
+              <Button asChild variant="ghost">
+                <Link href="/sign-in">Entrar</Link>
+              </Button>
+              <Button asChild>
+                <Link href="/sign-up">Criar Conta</Link>
+              </Button>
             </>
           )}
         </div>
       </header>
 
-      <section className="flex-1 flex flex-col items-center justify-center text-center px-6 py-20">
-        <h1 className="text-4xl sm:text-5xl font-bold mb-4">
+      <section className="flex-1 flex flex-col items-center justify-center text-center px-6 py-20 relative overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none bg-glow-primary" />
+        <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center mask-[linear-gradient(180deg,white,rgba(255,255,255,0))] opacity-10 pointer-events-none" />
+
+        <h1 className="relative z-10 text-4xl sm:text-5xl font-bold mb-4">
           Agendamentos sem complicação
         </h1>
-        <p className="text-lg text-muted-foreground mb-6 max-w-xl">
+        <p className="relative z-10 text-lg text-muted-foreground mb-6 max-w-xl">
           Conecte clientes e prestadores de forma inteligente. Uma solução
           moderna e eficiente para sua rotina.
         </p>
 
         {user ? (
-          <div className="flex flex-col items-center gap-3 bg-primary/5 border border-primary/20 p-5 rounded-2xl max-w-md mx-auto animate-in zoom-in-95 duration-200">
-            <p className="text-sm font-bold text-primary">Você está conectado como cliente!</p>
-            <p className="text-xs text-muted-foreground leading-normal">
-              Acesse o link de agendamento compartilhado por seu profissional para reservar um novo horário em apenas 1 clique.
-            </p>
+          <div className="relative z-10 flex flex-col items-center gap-4 bg-primary/5 border border-primary/20 p-6 rounded-2xl max-w-md mx-auto animate-in zoom-in-95 duration-200">
+            <div className="text-center space-y-1">
+              <p className="text-sm font-bold text-primary">
+                Você está conectado como cliente!
+              </p>
+              <p className="text-xs text-muted-foreground leading-normal">
+                Acesse o link de agendamento compartilhado por seu profissional
+                para reservar um novo horário.
+              </p>
+            </div>
+
+            <Separator className="w-full bg-primary/10" />
+
+            <div className="w-full text-center space-y-3">
+              <p className="text-sm font-semibold text-foreground">
+                Quer usar o Agendify para o seu negócio?
+              </p>
+              <Button asChild className="w-full shadow-sm">
+                <Link href="/onboarding" className="w-full block">
+                  Configurar Meu Negócio
+                </Link>
+              </Button>
+            </div>
           </div>
         ) : (
-          <div className="flex gap-4 flex-wrap justify-center">
-            <Link href="/sign-up">
-              <Button className="text-lg px-6 py-4">Comece agora</Button>
-            </Link>
-            <Link href="/sign-in">
-              <Button variant="outline" className="text-lg px-6 py-4">
-                Já tenho conta
-              </Button>
-            </Link>
+          <div className="relative z-10 flex gap-4 flex-wrap justify-center">
+            <Button asChild className="text-lg px-6 py-4">
+              <Link href="/sign-up">Comece agora</Link>
+            </Button>
+            <Button asChild variant="outline" className="text-lg px-6 py-4">
+              <Link href="/sign-in">Já tenho conta</Link>
+            </Button>
           </div>
         )}
       </section>
@@ -174,6 +201,8 @@ export default async function Home() {
           </div>
         </div>
       </section>
+
+      <PricingSection />
 
       <FAQSection />
 

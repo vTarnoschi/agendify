@@ -49,10 +49,10 @@ export function CalendarCarousel({ form }: CalendarCarouselProps) {
             <button
               key={day.toString()}
               onClick={() => setSelectedDate(day)}
-              className={`flex flex-col items-center p-2.5 sm:p-3 rounded-xl border text-center transition-all duration-200 cursor-pointer ${
+              className={`flex flex-col items-center p-2.5 sm:p-3 rounded-xl border-2 text-center transition-all duration-200 cursor-pointer ${
                 isSelected
-                  ? "border-[var(--brand-color)] bg-[var(--brand-color)] text-white shadow-sm font-bold"
-                  : "border-border hover:bg-accent/40 bg-card text-foreground"
+                  ? "border-primary bg-primary text-primary-foreground shadow-md font-bold"
+                  : "border-transparent hover:border-primary/30 hover:bg-accent/40 bg-card text-foreground shadow-sm"
               }`}
             >
               <span className="text-[10px] sm:text-xs uppercase font-bold opacity-80">
@@ -62,7 +62,7 @@ export function CalendarCarousel({ form }: CalendarCarouselProps) {
                 {format(day, "d")}
               </span>
               {isTodayDay && !isSelected && (
-                <div className="h-1 w-1 rounded-full bg-[var(--brand-color)] mt-1" />
+                <div className="h-1 w-1 rounded-full bg-primary mt-1" />
               )}
             </button>
           );

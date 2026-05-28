@@ -4,8 +4,6 @@ import { ReactNode } from "react";
 
 import { AppSidebar } from "~/components/app-sidebar";
 import { ThemeToggle } from "~/components/theme-toggle";
-import { ThemeFlavorToggle } from "~/components/theme-flavor-toggle";
-
 
 import {
   SidebarProvider,
@@ -23,7 +21,6 @@ export default function DashboardShell({ children }: { children: ReactNode }) {
             <SidebarTrigger className="-ml-1" />
           </div>
           <div className="flex items-center gap-2">
-            <ThemeFlavorToggle />
             <ThemeToggle />
           </div>
         </header>

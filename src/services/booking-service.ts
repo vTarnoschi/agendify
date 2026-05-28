@@ -21,16 +21,43 @@ export interface CreateBookingPayload {
   clientPhone?: string;
 }
 
-export async function getAvailability({ slug, date, serviceId }: AvailabilityParams): Promise<string[]> {
+export async function getAvailability({
+  slug,
+  date,
+  serviceId,
+}: AvailabilityParams): Promise<string[]> {
   const response = await apiClient.get<ApiResponse<AvailabilityResponseData>>(
-    `/availability?slug=${slug}&date=${date}&serviceId=${serviceId}`
+    `/availability?slug=${slug}&date=${date}&serviceId=${serviceId}`,
   );
   const result = response as unknown as ApiResponse<AvailabilityResponseData>;
   return result.data?.slots || [];
 }
 
-export async function createPublicAppointment(payload: CreateBookingPayload): Promise<boolean> {
-  const response = await apiClient.post<ApiResponse<null>>("/appointments", payload);
+export async function createPublicAppointment(
+  payload: CreateBookingPayload,
+): Promise<boolean> {
+  const response = await apiClient.post<ApiResponse<null>>(
+    "/appointments",
+    payload,
+  );
+  const result = response as unknown as ApiResponse<null>;
+  return result.success;
+}
+
+export interface ConvertGuestPayload {
+  name?: string;
+  email: string;
+  phone?: string;
+  password?: string;
+}
+
+export async function convertGuestAccount(
+  payload: ConvertGuestPayload,
+): Promise<boolean> {
+  const response = await apiClient.post<ApiResponse<null>>(
+    "/appointments/convert-guest",
+    payload,
+  );
   const result = response as unknown as ApiResponse<null>;
   return result.success;
 }

@@ -107,4 +107,37 @@ test.describe('Public Booking Flow', () => {
     await expect(page.getByText('10:00')).toBeVisible();
     await expect(page.getByText('Corte E2E')).toBeVisible();
   });
+
+  test('deve tratar erros de rede (500) adequadamente ao agendar', async ({ page }) => {
+    await page.route('**/api/availability*', async (route) => {
+      const json = { data: { slots: ["10:00"], hasGoogleIntegration: false }, success: true };
+      await route.fulfill({ json });
+    });
+
+    await page.goto(`/${testSlug}`);
+    await page.getByText('Corte E2E').click();
+    await page.getByRole('button', { name: '10:00', exact: true }).click();
+    await page.getByRole('button', { name: 'Confirmar Agendamento', exact: true }).click();
+
+    await page.getByPlaceholder('Ex: João da Silva').fill('Cliente E2E');
+    await page.getByPlaceholder('Ex: joao@email.com').fill('cliente.e2e@test.com');
+    await page.getByPlaceholder('(11) 99999-9999').fill('11999999999');
+
+    // Intercepta e simula erro 500
+    await page.route('**/api/appointments', async (route) => {
+      await route.fulfill({
+        status: 500,
+        contentType: 'application/json',
+        body: JSON.stringify({ message: "Internal Server Error" }),
+      });
+    });
+
+    await page.getByRole('dialog').getByRole('button', { name: 'Confirmar Agendamento' }).click();
+
+    // Valida que a tela de erro ou toast de erro foi exibido (se tiver toast)
+    // Supondo que o toast exibe a mensagem de erro da API
+    await expect(page.getByText(/Erro/i)).toBeVisible();
+    // A tela de sucesso NÃO deve estar visível
+    await expect(page.getByText('Agendamento Confirmado!')).toBeHidden();
+  });
 });

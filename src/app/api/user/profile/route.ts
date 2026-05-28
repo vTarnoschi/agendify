@@ -25,7 +25,7 @@ export async function GET() {
         workEnd: true,
         brandColor: true,
         brandLogo: true,
-        createdAt: true
+        createdAt: true,
       },
     });
 

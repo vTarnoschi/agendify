@@ -9,12 +9,12 @@ const faqs = [
   {
     question: "O que é o Agendify?",
     answer:
-      "O Agendify é uma plataforma de agendamento inteligente, feita para conectar prestadores de serviço e clientes com rapidez e organização.",
+      "O Agendify é o assistente virtual da sua agenda. Ele automatiza suas marcações, eliminando o vai-e-vem de mensagens no WhatsApp. Seus clientes podem escolher e reservar horários sozinhos, 24 horas por dia, enquanto a plataforma sincroniza tudo e cuida dos lembretes para você.",
   },
   {
     question: "Preciso pagar para usar?",
     answer:
-      "Não! O Agendify oferece uma versão gratuita para clientes e uma versão gratuita com funcionalidades básicas para prestadores.",
+      "Para os seus clientes, o agendamento é 100% gratuito. Para você (profissional), oferecemos um plano Free vitalício, ideal para quem está começando, e o plano Starter com recursos avançados de personalização e múltiplos calendários para quem deseja escalar o negócio.",
   },
   {
     question: "Sou prestador. Posso configurar meus horários?",

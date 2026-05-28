@@ -1,5 +1,9 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { getAppointments, cancelAppointment, AppointmentsResponseData } from "~/services/appointments-service";
+import {
+  getAppointments,
+  cancelAppointment,
+  AppointmentsResponseData,
+} from "~/services/appointments-service";
 
 export function useAppointmentsQuery() {
   return useQuery<AppointmentsResponseData>({

@@ -1,7 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "@clerk/ui/themes/shadcn.css";
-@import "./midnight-theme.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -47,29 +46,41 @@
 
 :root {
   --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
+  /* Slate 50 for background to reduce glare, Slate 950 for text */
+  --background: oklch(0.984 0.003 247.858);
+  --foreground: oklch(0.129 0.042 253.068);
+  
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
+  --card-foreground: oklch(0.129 0.042 253.068);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.129 0.042 253.068);
+  
+  /* Orange 600 */
+  --primary: oklch(0.646 0.222 41.116);
+  --primary-foreground: oklch(1 0 0);
+  
+  --secondary: oklch(0.968 0.007 247.896);
+  --secondary-foreground: oklch(0.129 0.042 253.068);
+  
+  --muted: oklch(0.968 0.007 247.896);
+  --muted-foreground: oklch(0.556 0.03 250);
+  
+  --accent: oklch(0.968 0.007 247.896);
+  --accent-foreground: oklch(0.129 0.042 253.068);
+  
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
+  --destructive-foreground: oklch(1 0 0);
+  
+  --border: oklch(0.922 0.015 250);
+  --input: oklch(0.922 0.015 250);
+  --ring: oklch(0.646 0.222 41.116);
+  
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
   --chart-4: oklch(0.828 0.189 84.429);
   --chart-5: oklch(0.769 0.188 70.08);
+  
   --sidebar: oklch(0.985 0 0);
   --sidebar-background: hsl(240 5% 98%);
   --sidebar-foreground: hsl(240 5.3% 26.1%);
@@ -80,49 +91,63 @@
   --sidebar-border: hsl(220 13% 91%);
   --sidebar-ring: hsl(217.2 91.2% 59.8%);
 
-  --clerk-color-primary: #171717;
+  /* Clerk Light Mode Theme */
+  --clerk-color-primary: #ea580c;
   --clerk-color-primary-foreground: #fafafa;
   --clerk-color-danger: #e7000b;
   --clerk-color-success: #22c543;
   --clerk-color-warning: #f36b16;
   --clerk-color-neutral: #0a0a0a;
-  --clerk-color-foreground: #0a0a0a;
+  --clerk-color-foreground: #020617;
   --clerk-color-background: #ffffff;
-  --clerk-color-input: #e5e5e5;
-  --clerk-color-input-foreground: #0a0a0a;
-  --clerk-color-ring: color-mix(in srgb, #a1a1a1 50%, transparent);
+  --clerk-color-input: #e2e8f0;
+  --clerk-color-input-foreground: #020617;
+  --clerk-color-ring: color-mix(in srgb, #ea580c 50%, transparent);
   --clerk-color-shimmer: #ffffff;
-  --clerk-color-modal-backdrop: #000000;
-  --clerk-border-radius: 0.375rem;
+  --clerk-color-modal-backdrop: rgba(0, 0, 0, 0.4);
+  --clerk-border-radius: 0.625rem;
   --clerk-spacing: 1rem;
-  --clerk-color-muted: #f5f5f5;
-  --clerk-color-muted-foreground: #737373;
+  --clerk-color-muted: #f8fafc;
+  --clerk-color-muted-foreground: #64748b;
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
+  color-scheme: dark;
+  /* Slate 950 bg, Slate 50 text */
+  --background: oklch(0.129 0.042 253.068);
+  --foreground: oklch(0.984 0.003 247.858);
+  
+  --card: oklch(0.208 0.042 253.068);
+  --card-foreground: oklch(0.984 0.003 247.858);
+  --popover: oklch(0.208 0.042 253.068);
+  --popover-foreground: oklch(0.984 0.003 247.858);
+  
+  /* Orange 500 */
+  --primary: oklch(0.705 0.213 36.425);
+  --primary-foreground: oklch(0.129 0.042 253.068);
+  
+  --secondary: oklch(0.279 0.041 260.031);
+  --secondary-foreground: oklch(0.984 0.003 247.858);
+  
+  --muted: oklch(0.279 0.041 260.031);
+  --muted-foreground: oklch(0.708 0.03 250);
+  
+  --accent: oklch(0.279 0.041 260.031);
+  --accent-foreground: oklch(0.984 0.003 247.858);
+  
   --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.488 0.243 264.376);
+  --destructive-foreground: oklch(0.129 0.042 253.068);
+  
+  --border: oklch(0.279 0.041 260.031);
+  --input: oklch(0.279 0.041 260.031);
+  --ring: oklch(0.705 0.213 36.425);
+  
+  --chart-1: oklch(0.705 0.213 36.425);
   --chart-2: oklch(0.696 0.17 162.48);
   --chart-3: oklch(0.769 0.188 70.08);
   --chart-4: oklch(0.627 0.265 303.9);
   --chart-5: oklch(0.645 0.246 16.439);
+  
   --sidebar: oklch(0.205 0 0);
   --sidebar-background: hsl(240 5.9% 10%);
   --sidebar-foreground: hsl(240 4.8% 95.9%);
@@ -133,28 +158,34 @@
   --sidebar-border: hsl(240 3.7% 15.9%);
   --sidebar-ring: hsl(217.2 91.2% 59.8%);
 
-  /* Clerk Dark Mode Theme variables from clerk.css */
-  --clerk-color-primary: #e5e5e5;
-  --clerk-color-primary-foreground: #171717;
+  /* Clerk Dark Mode Theme */
+  --clerk-color-primary: #f97316;
+  --clerk-color-primary-foreground: #020617;
   --clerk-color-danger: #ff6467;
   --clerk-color-success: #22c543;
   --clerk-color-warning: #f36b16;
   --clerk-color-neutral: #fafafa;
-  --clerk-color-foreground: #fafafa;
-  --clerk-color-background: #171717;
-  --clerk-color-input: #ffffff;
-  --clerk-color-input-foreground: #fafafa;
-  --clerk-color-ring: color-mix(in srgb, #737373 50%, transparent);
-  --clerk-color-shimmer: #ffffff;
-  --clerk-color-modal-backdrop: #000000;
-  --clerk-border-radius: 0.375rem;
+  --clerk-color-foreground: #f8fafc;
+  --clerk-color-background: #0f172a;
+  --clerk-color-input: #1e293b;
+  --clerk-color-input-foreground: #f8fafc;
+  --clerk-color-ring: color-mix(in srgb, #f97316 50%, transparent);
+  --clerk-color-shimmer: #1e293b;
+  --clerk-color-modal-backdrop: rgba(0, 0, 0, 0.6);
+  --clerk-border-radius: 0.625rem;
   --clerk-spacing: 1rem;
-  --clerk-color-muted: #262626;
-  --clerk-color-muted-foreground: #a1a1a1;
+  --clerk-color-muted: #1e293b;
+  --clerk-color-muted-foreground: #94a3b8;
 }
 
 @layer base {
   * {
     @apply border-border outline-ring/50;
+  }
+}
+
+@layer utilities {
+  .bg-glow-primary {
+    background-image: radial-gradient(circle at top, rgba(255, 107, 53, 0.15), transparent 45%);
   }
 }

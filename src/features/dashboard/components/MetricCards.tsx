@@ -1,4 +1,10 @@
-import { CalendarDays, Clock, DollarSign, TrendingUp, Users } from "lucide-react";
+import {
+  CalendarDays,
+  Clock,
+  DollarSign,
+  TrendingUp,
+  Users,
+} from "lucide-react";
 import { format, parseISO } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
@@ -30,7 +36,9 @@ export function MetricCards({ state }: MetricCardsProps) {
         </CardHeader>
         <CardContent>
           <div className="text-3xl font-extrabold">{totalBookings}</div>
-          <p className="text-xs text-muted-foreground mt-1">Sincronizados com o Google Agenda</p>
+          <p className="text-xs text-muted-foreground mt-1">
+            Sincronizados com o Google Agenda
+          </p>
         </CardContent>
       </Card>
 
@@ -43,7 +51,9 @@ export function MetricCards({ state }: MetricCardsProps) {
         </CardHeader>
         <CardContent>
           <div className="text-3xl font-extrabold">{todayBookings}</div>
-          <p className="text-xs text-muted-foreground mt-1">Clientes marcados para hoje</p>
+          <p className="text-xs text-muted-foreground mt-1">
+            Clientes marcados para hoje
+          </p>
         </CardContent>
       </Card>
 
@@ -56,7 +66,11 @@ export function MetricCards({ state }: MetricCardsProps) {
         </CardHeader>
         <CardContent>
           <div className="text-3xl font-extrabold text-green-600 dark:text-green-400">
-            R$ {estimatedRevenue.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+            R${" "}
+            {estimatedRevenue.toLocaleString("pt-BR", {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })}
           </div>
           <p className="text-xs text-muted-foreground mt-1 flex items-center gap-1">
             <TrendingUp className="h-3 w-3 text-green-500" />
@@ -77,17 +91,28 @@ export function MetricCards({ state }: MetricCardsProps) {
             <div>
               <div className="text-lg font-bold truncate text-foreground">
                 {isProvider
-                  ? nextAppointment.user?.name || nextAppointment.clientName || "Visitante"
-                  : nextAppointment.provider?.businessName || nextAppointment.provider?.name}
+                  ? nextAppointment.user?.name ||
+                    nextAppointment.clientName ||
+                    "Visitante"
+                  : nextAppointment.provider?.businessName ||
+                    nextAppointment.provider?.name}
               </div>
               <p className="text-xs text-muted-foreground mt-1 truncate">
-                {format(parseISO(nextAppointment.date), "eeee, d 'de' MMMM 'às' HH:mm", { locale: ptBR })}
+                {format(
+                  parseISO(nextAppointment.date),
+                  "eeee, d 'de' MMMM 'às' HH:mm",
+                  { locale: ptBR },
+                )}
               </p>
             </div>
           ) : (
             <div>
-              <div className="text-lg font-bold text-muted-foreground">Nenhum agendamento</div>
-              <p className="text-xs text-muted-foreground mt-1">Sem próximos horários</p>
+              <div className="text-lg font-bold text-muted-foreground">
+                Nenhum agendamento
+              </div>
+              <p className="text-xs text-muted-foreground mt-1">
+                Sem próximos horários
+              </p>
             </div>
           )}
         </CardContent>

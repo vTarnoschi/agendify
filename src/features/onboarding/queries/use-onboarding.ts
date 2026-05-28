@@ -1,5 +1,8 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { submitOnboarding, OnboardingPayload } from "~/services/onboarding-service";
+import {
+  submitOnboarding,
+  OnboardingPayload,
+} from "~/services/onboarding-service";
 
 export function useOnboardingMutation() {
   const queryClient = useQueryClient();

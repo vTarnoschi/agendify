@@ -1,9 +1,13 @@
 import { NextRequest } from "next/server";
 import { auth, clerkClient } from "@clerk/nextjs/server";
 import { google } from "googleapis";
+import { format } from "date-fns";
+import { ptBR } from "date-fns/locale/pt-BR";
 
 import { prisma } from "~/lib/prisma";
 import { error, success } from "~/lib/api-response";
+import { resend } from "~/lib/mail";
+import BookingCancellationEmail from "~/emails/BookingCancellation";
 
 interface DeleteParams {
   params: Promise<{
@@ -28,11 +32,20 @@ export async function DELETE(_req: NextRequest, { params }: DeleteParams) {
       select: {
         id: true,
         googleEventId: true,
+        title: true,
+        date: true,
+        clientName: true,
+        clientEmail: true,
         user: {
-          select: { clerkId: true },
+          select: { clerkId: true, email: true, name: true },
         },
         provider: {
-          select: { clerkId: true },
+          select: {
+            clerkId: true,
+            name: true,
+            businessName: true,
+            brandColor: true,
+          },
         },
       },
     });
@@ -47,7 +60,10 @@ export async function DELETE(_req: NextRequest, { params }: DeleteParams) {
       appointment.provider.clerkId === clerkId;
 
     if (!isOwner) {
-      return error("Você não tem permissão para cancelar este agendamento.", 403);
+      return error(
+        "Você não tem permissão para cancelar este agendamento.",
+        403,
+      );
     }
 
     // Tentar deletar o evento do Google Calendar se houver integração
@@ -57,11 +73,14 @@ export async function DELETE(_req: NextRequest, { params }: DeleteParams) {
         const clerk = await clerkClient();
         const oauthResponse = await clerk.users.getUserOauthAccessToken(
           appointment.provider.clerkId,
-          "google"
+          "oauth_google",
         );
         googleToken = oauthResponse.data[0]?.token || null;
       } catch (oauthErr) {
-        console.warn("Não foi possível carregar token para deletar no Google Agenda:", oauthErr);
+        console.warn(
+          "Não foi possível carregar token para deletar no Google Agenda:",
+          oauthErr,
+        );
       }
 
       if (googleToken) {
@@ -75,7 +94,9 @@ export async function DELETE(_req: NextRequest, { params }: DeleteParams) {
             calendarId: "primary",
             eventId: appointment.googleEventId,
           });
-          console.log(`Evento ${appointment.googleEventId} deletado do Google Calendar.`);
+          console.log(
+            `Evento ${appointment.googleEventId} deletado do Google Calendar.`,
+          );
         } catch (calErr) {
           console.error("Erro ao deletar o evento do Google Calendar:", calErr);
           // Prosseguimos com o delete no Prisma mesmo se falhar no Google
@@ -87,6 +108,57 @@ export async function DELETE(_req: NextRequest, { params }: DeleteParams) {
     await prisma.appointment.delete({
       where: { id },
     });
+
+    // Identificar informações de contato finais do cliente
+    const guestName = appointment.user
+      ? appointment.user.name
+      : appointment.clientName;
+    const guestEmail = appointment.user
+      ? appointment.user.email
+      : appointment.clientEmail;
+
+    // Enviar e-mail de cancelamento via Resend (não-bloqueante)
+    if (guestEmail) {
+      try {
+        const formattedDate = format(
+          appointment.date,
+          "dd 'de' MMMM 'de' yyyy",
+          { locale: ptBR },
+        );
+        const formattedTime = format(appointment.date, "HH:mm");
+
+        resend.emails
+          .send({
+            from:
+              process.env.RESEND_FROM_EMAIL ||
+              "Agendify <onboarding@resend.dev>",
+            to: guestEmail,
+            subject: `Cancelamento de Agendamento: ${appointment.title}`,
+            react: BookingCancellationEmail({
+              clientName: guestName,
+              providerName:
+                appointment.provider.name ||
+                appointment.provider.businessName ||
+                "Profissional",
+              serviceTitle: appointment.title,
+              date: formattedDate,
+              time: formattedTime,
+              brandColor: appointment.provider.brandColor,
+            }),
+          })
+          .catch((err) =>
+            console.error(
+              "Erro assíncrono ao enviar email Resend de cancelamento:",
+              err,
+            ),
+          );
+      } catch (emailErr) {
+        console.error(
+          "Erro ao preparar email Resend de cancelamento:",
+          emailErr,
+        );
+      }
+    }
 
     return success({ message: "Agendamento cancelado com sucesso." });
   } catch (err: unknown) {

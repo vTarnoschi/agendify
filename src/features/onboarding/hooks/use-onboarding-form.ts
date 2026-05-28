@@ -3,7 +3,10 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useOnboardingMutation } from "../queries/use-onboarding";
-import { onboardingSchema, OnboardingFormValues } from "../schemas/onboarding-schema";
+import {
+  onboardingSchema,
+  OnboardingFormValues,
+} from "../schemas/onboarding-schema";
 
 export function useOnboardingForm() {
   const [isSlugManuallyEdited, setIsSlugManuallyEdited] = useState(false);
@@ -70,7 +73,7 @@ export function useOnboardingForm() {
         onError: (err: Error) => {
           setError(err.message || "Erro ao salvar os dados.");
         },
-      }
+      },
     );
   };
 

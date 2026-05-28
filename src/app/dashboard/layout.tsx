@@ -5,20 +5,31 @@ import { currentUser, clerkClient } from "@clerk/nextjs/server";
 import { prisma } from "~/lib/prisma";
 import DashboardShell from "~/features/dashboard/components/dashboard-shell";
 
-export default async function DashboardLayout({ children }: { children: ReactNode }) {
+export default async function DashboardLayout({
+  children,
+}: {
+  children: ReactNode;
+}) {
   const user = await currentUser();
 
   if (user) {
     const existingUser = await prisma.user.findUnique({
       where: { clerkId: user.id },
-      select: { id: true, clerkId: true, email: true, name: true, role: true, slug: true },
+      select: {
+        id: true,
+        clerkId: true,
+        email: true,
+        name: true,
+        role: true,
+        slug: true,
+      },
     });
 
     let dbRole = existingUser?.role ?? "client";
 
     if (!existingUser) {
       const primaryEmail = user.emailAddresses.find(
-        (email) => email.id === user.primaryEmailAddressId
+        (email) => email.id === user.primaryEmailAddressId,
       )?.emailAddress;
 
       if (primaryEmail) {
@@ -40,7 +51,8 @@ export default async function DashboardLayout({ children }: { children: ReactNod
             data: {
               clerkId: user.id,
               email: primaryEmail,
-              name: `${user.firstName || ""} ${user.lastName || ""}`.trim() || null,
+              name:
+                `${user.firstName || ""} ${user.lastName || ""}`.trim() || null,
               role: "client", // Role padrão
             },
           });
@@ -57,10 +69,12 @@ export default async function DashboardLayout({ children }: { children: ReactNod
       });
     }
 
-    const finalExistingUser = existingUser ?? await prisma.user.findUnique({
-      where: { clerkId: user.id },
-      select: { id: true, role: true, slug: true },
-    });
+    const finalExistingUser =
+      existingUser ??
+      (await prisma.user.findUnique({
+        where: { clerkId: user.id },
+        select: { id: true, role: true, slug: true },
+      }));
 
     // Usuário novo ou sem slug ainda → manda para o onboarding para configurar o negócio.
     // Isso cobre o caso de usuários recém-cadastrados que ainda não definiram seu papel.

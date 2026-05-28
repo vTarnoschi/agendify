@@ -11,7 +11,10 @@ export function LivePreview({ brandColor, brandLogo, user }: LivePreviewProps) {
   return (
     <div className="lg:col-span-7 flex flex-col gap-4 animate-in fade-in duration-300">
       <h2 className="text-2xl font-bold flex items-center gap-2">
-        <Sparkles className="h-5 w-5 text-yellow-500 animate-pulse" aria-hidden="true" />
+        <Sparkles
+          className="h-5 w-5 text-yellow-500 animate-pulse"
+          aria-hidden="true"
+        />
         Live Preview da Sua Página
       </h2>
       <div className="border rounded-2xl p-6 bg-card shadow-sm flex flex-col gap-6 relative overflow-hidden">
@@ -40,7 +43,9 @@ export function LivePreview({ brandColor, brandLogo, user }: LivePreviewProps) {
                 className="h-16 w-16 rounded-full flex items-center justify-center text-white text-xl font-bold transition-all duration-200"
                 style={{ backgroundColor: brandColor }}
               >
-                {(user?.businessName || user?.name || "AG").substring(0, 2).toUpperCase()}
+                {(user?.businessName || user?.name || "AG")
+                  .substring(0, 2)
+                  .toUpperCase()}
               </div>
             )}
             <div className="flex flex-col gap-1">
@@ -56,7 +61,9 @@ export function LivePreview({ brandColor, brandLogo, user }: LivePreviewProps) {
 
         {/* Grade Simulada do Calendário */}
         <div className="border-t pt-6 flex flex-col gap-4">
-          <p className="text-xs font-bold text-muted-foreground uppercase">Selecione data e hora</p>
+          <p className="text-xs font-bold text-muted-foreground uppercase">
+            Selecione data e hora
+          </p>
           <div className="grid grid-cols-4 gap-2">
             {[
               { day: "Seg", date: "18", isSelected: false },
@@ -71,10 +78,12 @@ export function LivePreview({ brandColor, brandLogo, user }: LivePreviewProps) {
                   backgroundColor: item.isSelected ? brandColor : undefined,
                   borderColor: item.isSelected ? brandColor : undefined,
                   color: item.isSelected ? "#ffffff" : undefined,
-                  fontWeight: item.isSelected ? "bold" : undefined
+                  fontWeight: item.isSelected ? "bold" : undefined,
                 }}
               >
-                <span className="text-[10px] uppercase opacity-75">{item.day}</span>
+                <span className="text-[10px] uppercase opacity-75">
+                  {item.day}
+                </span>
                 <span className="text-base font-bold mt-0.5">{item.date}</span>
               </div>
             ))}
@@ -94,7 +103,9 @@ export function LivePreview({ brandColor, brandLogo, user }: LivePreviewProps) {
                 className="p-3 rounded-xl border text-xs font-semibold text-center transition-all duration-200"
                 style={{
                   borderColor: slot.isSelected ? brandColor : "var(--border)",
-                  backgroundColor: slot.isSelected ? `${brandColor}15` : undefined,
+                  backgroundColor: slot.isSelected
+                    ? `${brandColor}15`
+                    : undefined,
                   color: slot.isSelected ? brandColor : undefined,
                 }}
               >

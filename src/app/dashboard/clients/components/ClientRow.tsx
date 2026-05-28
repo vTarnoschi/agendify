@@ -10,7 +10,12 @@ interface ClientRowProps {
 
 export function ClientRow({ client }: ClientRowProps) {
   const initials = client.name
-    ? client.name.split(" ").slice(0, 2).map((n) => n[0]).join("").toUpperCase()
+    ? client.name
+        .split(" ")
+        .slice(0, 2)
+        .map((n) => n[0])
+        .join("")
+        .toUpperCase()
     : "CL";
 
   return (
@@ -36,14 +41,20 @@ export function ClientRow({ client }: ClientRowProps) {
         {/* Badge Fidelidade */}
         <div className="flex items-center gap-1.5 bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-bold">
           <Award className="h-3.5 w-3.5" />
-          <span>{client.totalBookings} {client.totalBookings === 1 ? "agendamento" : "agendamentos"}</span>
+          <span>
+            {client.totalBookings}{" "}
+            {client.totalBookings === 1 ? "agendamento" : "agendamentos"}
+          </span>
         </div>
 
         {/* Último Atendimento */}
         <div className="flex items-center gap-1.5 text-xs text-muted-foreground bg-accent/40 px-3 py-1 rounded-full">
           <Clock className="h-3.5 w-3.5" />
           <span>
-            Último: {format(parseISO(client.lastBookingDate), "dd/MM/yyyy 'às' HH:mm", { locale: ptBR })}
+            Último:{" "}
+            {format(parseISO(client.lastBookingDate), "dd/MM/yyyy 'às' HH:mm", {
+              locale: ptBR,
+            })}
           </span>
         </div>
       </div>

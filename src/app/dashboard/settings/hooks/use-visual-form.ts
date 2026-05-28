@@ -14,7 +14,7 @@ export function useVisualForm() {
   const form = useForm<VisualFormValues>({
     resolver: zodResolver(visualSchema),
     defaultValues: {
-      brandColor: user?.brandColor || "#7c3aed",
+      brandColor: user?.brandColor || "#18181b",
       brandLogo: user?.brandLogo || "",
     },
     mode: "onChange",
@@ -24,7 +24,7 @@ export function useVisualForm() {
   useEffect(() => {
     if (user) {
       form.reset({
-        brandColor: user.brandColor || "#7c3aed",
+        brandColor: user.brandColor || "#18181b",
         brandLogo: user.brandLogo || "",
       });
     }

@@ -39,16 +39,15 @@ export default function BookingConfirmationEmail({
           <Section style={{ ...header, backgroundColor: color }}>
             <Heading style={headerTitle}>Agendify</Heading>
           </Section>
-          
+
           <Section style={content}>
             <Heading style={title}>Agendamento Confirmado! 🎉</Heading>
-            
+
+            <Text style={text}>Olá {clientName || "Visitante"},</Text>
+
             <Text style={text}>
-              Olá {clientName || "Visitante"},
-            </Text>
-            
-            <Text style={text}>
-              Seu agendamento para <strong>{serviceTitle}</strong> com <strong>{providerName}</strong> foi confirmado com sucesso.
+              Seu agendamento para <strong>{serviceTitle}</strong> com{" "}
+              <strong>{providerName}</strong> foi confirmado com sucesso.
             </Text>
 
             <Section style={detailsContainer}>
@@ -57,11 +56,11 @@ export default function BookingConfirmationEmail({
             </Section>
 
             <Text style={text}>
-              Por favor, tente chegar com 5 minutos de antecedência. Em caso de imprevistos, entre em contato diretamente com o profissional.
+              Por favor, tente chegar com 5 minutos de antecedência. Em caso de
+              imprevistos, entre em contato diretamente com o profissional.
             </Text>
-            
           </Section>
-          
+
           <Section style={footer}>
             <Text style={footerText}>
               Enviado via Agendify — A plataforma inteligente de agendamentos.

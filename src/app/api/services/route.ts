@@ -8,8 +8,15 @@ import { formatZodError } from "~/lib/zod-utils";
 const serviceSchema = z.object({
   name: z.string().nonempty("Nome do serviço é obrigatório"),
   description: z.string().optional().nullable(),
-  price: z.number().min(0, "O preço não pode ser negativo").optional().nullable(),
-  duration: z.number().min(5, "A duração mínima é de 5 minutos").max(480, "Duração máxima de 8 horas"),
+  price: z
+    .number()
+    .min(0, "O preço não pode ser negativo")
+    .optional()
+    .nullable(),
+  duration: z
+    .number()
+    .min(5, "A duração mínima é de 5 minutos")
+    .max(480, "Duração máxima de 8 horas"),
 });
 
 export async function GET() {

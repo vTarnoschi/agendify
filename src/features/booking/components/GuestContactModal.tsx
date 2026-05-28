@@ -22,7 +22,10 @@ import {
   FormMessage,
 } from "~/components/ui/form";
 import { BookingFormType } from "../hooks/use-booking-form";
-import { contactSchema, type ContactFormValues } from "../schemas/contact-schema";
+import {
+  contactSchema,
+  type ContactFormValues,
+} from "../schemas/contact-schema";
 
 // Máscara de telefone brasileiro: (DD) DDDD-DDDD ou (DD) DDDDD-DDDD
 function applyPhoneMask(value: string): string {
@@ -76,18 +79,24 @@ export function GuestContactModal({ state }: GuestContactModalProps) {
             <span>Dados de Contato</span>
           </DialogTitle>
           <DialogDescription className="text-muted-foreground font-medium text-sm">
-            Informe seus dados para podermos enviar a confirmação e o lembrete do agendamento.
+            Informe seus dados para podermos enviar a confirmação e o lembrete
+            do agendamento.
           </DialogDescription>
         </DialogHeader>
 
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-5 mt-4">
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="flex flex-col gap-5 mt-4"
+          >
             <FormField
               control={form.control}
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="font-bold text-sm text-foreground">Nome Completo <span className="text-destructive">*</span></FormLabel>
+                  <FormLabel className="font-bold text-sm text-foreground">
+                    Nome Completo <span className="text-destructive">*</span>
+                  </FormLabel>
                   <FormControl>
                     <div className="relative">
                       <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -108,7 +117,9 @@ export function GuestContactModal({ state }: GuestContactModalProps) {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="font-bold text-sm text-foreground">E-mail <span className="text-destructive">*</span></FormLabel>
+                  <FormLabel className="font-bold text-sm text-foreground">
+                    E-mail <span className="text-destructive">*</span>
+                  </FormLabel>
                   <FormControl>
                     <div className="relative">
                       <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -130,7 +141,10 @@ export function GuestContactModal({ state }: GuestContactModalProps) {
               name="phone"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="font-bold text-sm text-foreground">WhatsApp / Celular <span className="text-destructive">*</span></FormLabel>
+                  <FormLabel className="font-bold text-sm text-foreground">
+                    WhatsApp / Celular{" "}
+                    <span className="text-destructive">*</span>
+                  </FormLabel>
                   <FormControl>
                     <div className="relative">
                       <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />

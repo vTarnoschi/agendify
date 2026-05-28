@@ -6,18 +6,21 @@ import {
   useServicesQuery,
   useCreateServiceMutation,
   useUpdateServiceMutation,
-  useDeleteServiceMutation
+  useDeleteServiceMutation,
 } from "~/queries/use-services";
 import { ServiceType } from "~/services/services-service";
 import { serviceSchema, ServiceFormValues } from "../schemas/settings-schemas";
 
 export function useServicosForm() {
-  const { data: services = [], isLoading: loadingServices } = useServicesQuery();
+  const { data: services = [], isLoading: loadingServices } =
+    useServicesQuery();
   const createServiceMutation = useCreateServiceMutation();
   const updateServiceMutation = useUpdateServiceMutation();
   const deleteServiceMutation = useDeleteServiceMutation();
 
-  const [editingService, setEditingService] = useState<ServiceType | null>(null);
+  const [editingService, setEditingService] = useState<ServiceType | null>(
+    null,
+  );
   const [errorMsg, setErrorMsg] = useState("");
 
   const form = useForm<ServiceFormValues>({
@@ -36,7 +39,10 @@ export function useServicosForm() {
     form.reset({
       name: srv.name,
       description: srv.description || "",
-      price: srv.price !== null && srv.price !== undefined ? srv.price.toFixed(2) : "",
+      price:
+        srv.price !== null && srv.price !== undefined
+          ? srv.price.toFixed(2)
+          : "",
       duration: srv.duration.toString(),
     });
     setErrorMsg("");
@@ -54,7 +60,7 @@ export function useServicosForm() {
   };
 
   const handlePriceBlur = () => {
-    const value = form.getValues("price")
+    const value = form.getValues("price");
     if (value) {
       const parsed = parseFloat(value);
       if (!isNaN(parsed)) {
@@ -86,7 +92,7 @@ export function useServicosForm() {
             setErrorMsg(msg);
             toast.error(msg);
           },
-        }
+        },
       );
     } else {
       createServiceMutation.mutate(payload, {
@@ -135,8 +141,11 @@ export function useServicosForm() {
     handlePriceBlur,
     handleDeleteService,
     errorMsg,
-    creatingService: createServiceMutation.isPending || updateServiceMutation.isPending,
-    deletingServiceId: deleteServiceMutation.isPending ? deleteServiceMutation.variables : null,
+    creatingService:
+      createServiceMutation.isPending || updateServiceMutation.isPending,
+    deletingServiceId: deleteServiceMutation.isPending
+      ? deleteServiceMutation.variables
+      : null,
   };
 }
 

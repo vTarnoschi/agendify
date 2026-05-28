@@ -1,4 +1,3 @@
-
 import { auth, clerkClient } from "@clerk/nextjs/server";
 import { z } from "zod";
 import { google } from "googleapis";
@@ -36,15 +35,41 @@ export async function POST(req: Request) {
       return failure("Dados inválidos", errors, 400);
     }
 
-    const { slug, date, title, description, clientName, clientEmail, clientPhone } = parsed.data;
+    const {
+      slug,
+      date,
+      title,
+      description,
+      clientName,
+      clientEmail,
+      clientPhone,
+    } = parsed.data;
 
     // Se o cliente NÃO estiver logado, Nome e E-mail passam a ser obrigatórios no corpo da requisição
     if (!clientClerkId) {
       if (!clientName?.trim()) {
-        return failure("Dados inválidos", [{ field: "clientName", message: "Nome é obrigatório para agendamento de visitante." }], 400);
+        return failure(
+          "Dados inválidos",
+          [
+            {
+              field: "clientName",
+              message: "Nome é obrigatório para agendamento de visitante.",
+            },
+          ],
+          400,
+        );
       }
       if (!clientEmail?.trim()) {
-        return failure("Dados inválidos", [{ field: "clientEmail", message: "E-mail é obrigatório para agendamento de visitante." }], 400);
+        return failure(
+          "Dados inválidos",
+          [
+            {
+              field: "clientEmail",
+              message: "E-mail é obrigatório para agendamento de visitante.",
+            },
+          ],
+          400,
+        );
       }
     }
 
@@ -55,7 +80,10 @@ export async function POST(req: Request) {
         where: { clerkId: clientClerkId },
       });
       if (!clientUser) {
-        return error("Cadastro do cliente logado não encontrado no banco.", 404);
+        return error(
+          "Cadastro do cliente logado não encontrado no banco.",
+          404,
+        );
       }
     }
 
@@ -106,22 +134,33 @@ export async function POST(req: Request) {
     // Enviar e-mail de confirmação via Resend (não-bloqueante)
     if (guestEmail) {
       try {
-        const formattedDate = format(startDateTime, "dd 'de' MMMM 'de' yyyy", { locale: ptBR });
+        const formattedDate = format(startDateTime, "dd 'de' MMMM 'de' yyyy", {
+          locale: ptBR,
+        });
         const formattedTime = format(startDateTime, "HH:mm");
 
-        resend.emails.send({
-          from: "Agendify <onboarding@resend.dev>", // Sandbox default do Resend
-          to: guestEmail,
-          subject: `Confirmação de Agendamento: ${title}`,
-          react: BookingConfirmationEmail({
-            clientName: guestName,
-            providerName: providerUser.name || providerUser.businessName || "Profissional",
-            serviceTitle: title,
-            date: formattedDate,
-            time: formattedTime,
-            brandColor: providerUser.brandColor,
-          }),
-        }).catch(err => console.error("Erro assíncrono ao enviar email Resend:", err));
+        resend.emails
+          .send({
+            from:
+              process.env.RESEND_FROM_EMAIL ||
+              "Agendify <onboarding@resend.dev>",
+            to: guestEmail,
+            subject: `Confirmação de Agendamento: ${title}`,
+            react: BookingConfirmationEmail({
+              clientName: guestName,
+              providerName:
+                providerUser.name ||
+                providerUser.businessName ||
+                "Profissional",
+              serviceTitle: title,
+              date: formattedDate,
+              time: formattedTime,
+              brandColor: providerUser.brandColor,
+            }),
+          })
+          .catch((err) =>
+            console.error("Erro assíncrono ao enviar email Resend:", err),
+          );
       } catch (emailErr) {
         console.error("Erro ao preparar email Resend:", emailErr);
       }
@@ -133,16 +172,21 @@ export async function POST(req: Request) {
       const clerk = await clerkClient();
       const oauthResponse = await clerk.users.getUserOauthAccessToken(
         providerUser.clerkId,
-        "oauth_google"
+        "oauth_google",
       );
 
       googleToken = oauthResponse.data[0]?.token || null;
     } catch (oauthErr: unknown) {
       const err = oauthErr as { status?: number; message?: string };
       if (err?.status === 422) {
-        console.warn(`[Aviso] O profissional (${providerUser.slug}) não possui a integração com o Google Calendar vinculada.`);
+        console.warn(
+          `[Aviso] O profissional (${providerUser.slug}) não possui a integração com o Google Calendar vinculada.`,
+        );
       } else {
-        console.warn("Sem token do Google OAuth para o provider:", err?.message || oauthErr);
+        console.warn(
+          "Sem token do Google OAuth para o provider:",
+          err?.message || oauthErr,
+        );
       }
     }
 
@@ -153,40 +197,52 @@ export async function POST(req: Request) {
 
       const calendar = google.calendar({ version: "v3", auth: oauth2Client });
 
-      try {
-        const calResponse = await calendar.events.insert({
+      calendar.events
+        .insert({
           calendarId: "primary",
           requestBody: {
             summary: `Agendify: ${title}`,
-            description: description || `Agendamento realizado via Agendify.\nCliente: ${guestName || "Visitante"} (${guestEmail || ""})${guestPhone ? `\nTelefone: ${guestPhone}` : ""}`,
+            description:
+              description ||
+              `Agendamento realizado via Agendify.\nCliente: ${guestName || "Visitante"} (${guestEmail || ""})${guestPhone ? `\nTelefone: ${guestPhone}` : ""}`,
             start: {
               dateTime: startDateTime.toISOString(),
             },
             end: {
               dateTime: endDateTime.toISOString(),
             },
-            attendees: guestEmail ? [
-              { email: guestEmail, displayName: guestName || undefined },
-            ] : [],
+            attendees: guestEmail
+              ? [{ email: guestEmail, displayName: guestName || undefined }]
+              : [],
             reminders: {
               useDefault: true,
             },
           },
+        })
+        .then((calResponse) => {
+          const googleEventId = calResponse.data.id;
+          if (googleEventId) {
+            prisma.appointment
+              .update({
+                where: { id: appointment.id },
+                data: { googleEventId },
+              })
+              .then(() => {
+                console.log(
+                  `Evento inserido com sucesso na agenda do profissional: ${providerUser.email}`,
+                );
+              })
+              .catch((updateErr) => {
+                console.error(
+                  "Erro ao atualizar googleEventId no prisma:",
+                  updateErr,
+                );
+              });
+          }
+        })
+        .catch((calErr) => {
+          console.error("Erro ao injetar evento no Google Calendar:", calErr);
         });
-        
-        const googleEventId = calResponse.data.id;
-        if (googleEventId) {
-          await prisma.appointment.update({
-            where: { id: appointment.id },
-            data: { googleEventId },
-          });
-        }
-        
-        console.log(`Evento inserido com sucesso na agenda do profissional: ${providerUser.email}`);
-      } catch (calErr) {
-        console.error("Erro ao injetar evento no Google Calendar:", calErr);
-        // Mesmo se falhar o Google Calendar, não quebramos a resposta pois o agendamento já foi salvo no Prisma.
-      }
     }
 
     return success(appointment);
@@ -214,7 +270,8 @@ export async function GET() {
     }
 
     let appointments = [];
-    let services: Array<{ id: string; name: string; price: number | null }> = [];
+    let services: Array<{ id: string; name: string; price: number | null }> =
+      [];
 
     if (dbUser.role === "provider") {
       // Se for profissional, lista todos os agendamentos marcados com ele

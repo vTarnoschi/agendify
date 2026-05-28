@@ -1,23 +1,36 @@
-import { 
-  Clock, 
-  Plus, 
-  Trash2, 
-  Save, 
-  Loader2, 
-  DollarSign, 
-  Pencil, 
-  X 
+import {
+  Clock,
+  Plus,
+  Trash2,
+  Save,
+  Loader2,
+  DollarSign,
+  Pencil,
+  X,
 } from "lucide-react";
 import { Button } from "~/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "~/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "~/components/ui/card";
 import { Input } from "~/components/ui/input";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "~/components/ui/form";
-import { 
-  Select, 
-  SelectContent, 
-  SelectItem, 
-  SelectTrigger, 
-  SelectValue 
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "~/components/ui/form";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from "~/components/ui/select";
 import { ServicosFormType } from "../hooks/use-servicos-form";
 
@@ -51,16 +64,14 @@ export function ServicosTab({ servicosForm }: ServicosTabProps) {
               {editingService ? "Editar Serviço" : "Novo Serviço"}
             </CardTitle>
             <CardDescription>
-              {editingService 
+              {editingService
                 ? `Modifique os dados do serviço "${editingService.name}".`
-                : "Cadastre as opções que seus clientes poderão agendar."
-              }
+                : "Cadastre as opções que seus clientes poderão agendar."}
             </CardDescription>
           </CardHeader>
           <CardContent>
             <Form {...form}>
               <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-                
                 {/* Nome do Serviço */}
                 <FormField
                   control={form.control}
@@ -102,7 +113,6 @@ export function ServicosTab({ servicosForm }: ServicosTabProps) {
                 />
 
                 <div className="grid grid-cols-2 gap-4">
-                  
                   {/* Preço */}
                   <FormField
                     control={form.control}
@@ -136,7 +146,11 @@ export function ServicosTab({ servicosForm }: ServicosTabProps) {
                     render={({ field }) => (
                       <FormItem className="flex flex-col gap-2">
                         <FormLabel>Duração *</FormLabel>
-                        <Select onValueChange={field.onChange} value={field.value} defaultValue={field.value}>
+                        <Select
+                          onValueChange={field.onChange}
+                          value={field.value}
+                          defaultValue={field.value}
+                        >
                           <FormControl>
                             <SelectTrigger className="w-full h-11 rounded-xl bg-background border border-input px-3 py-2 text-sm justify-between flex items-center">
                               <SelectValue placeholder="Selecione a duração" />
@@ -177,7 +191,11 @@ export function ServicosTab({ servicosForm }: ServicosTabProps) {
                     ) : (
                       <Plus className="h-4 w-4" />
                     )}
-                    <span>{editingService ? "Salvar Alterações" : "Cadastrar Serviço"}</span>
+                    <span>
+                      {editingService
+                        ? "Salvar Alterações"
+                        : "Cadastrar Serviço"}
+                    </span>
                   </Button>
 
                   {editingService && (
@@ -200,35 +218,50 @@ export function ServicosTab({ servicosForm }: ServicosTabProps) {
 
       {/* Listagem de Serviços */}
       <div className="lg:col-span-7 flex flex-col gap-4">
-        <h2 className="text-2xl font-bold">Serviços Cadastrados ({services.length})</h2>
-        
+        <h2 className="text-2xl font-bold">
+          Serviços Cadastrados ({services.length})
+        </h2>
+
         {loadingServices ? (
           <div className="flex flex-col gap-3">
             {Array.from({ length: 3 }).map((_, i) => (
-              <div key={i} className="h-24 bg-accent/30 rounded-2xl animate-pulse"></div>
+              <div
+                key={i}
+                className="h-24 bg-accent/30 rounded-2xl animate-pulse"
+              ></div>
             ))}
           </div>
         ) : services.length > 0 ? (
           <div className="grid grid-cols-1 gap-4">
             {services.map((srv) => (
-              <Card key={srv.id} className="border shadow-sm hover:shadow-md transition-all duration-200">
+              <Card
+                key={srv.id}
+                className="border shadow-sm hover:shadow-md transition-all duration-200"
+              >
                 <CardContent className="p-5 flex justify-between items-center gap-4">
                   <div className="flex flex-col gap-1">
-                    <h3 className="font-bold text-lg text-foreground">{srv.name}</h3>
+                    <h3 className="font-bold text-lg text-foreground">
+                      {srv.name}
+                    </h3>
                     {srv.description && (
-                      <p className="text-sm text-muted-foreground">{srv.description}</p>
+                      <p className="text-sm text-muted-foreground">
+                        {srv.description}
+                      </p>
                     )}
                     <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs font-semibold text-muted-foreground mt-2">
                       <span className="bg-primary/10 text-primary px-2.5 py-0.5 rounded-full flex items-center gap-1 font-bold">
                         <Clock className="h-3 w-3 mr-1" />
-                        {srv.duration >= 60 
+                        {srv.duration >= 60
                           ? `${Math.floor(srv.duration / 60)}h${srv.duration % 60 > 0 ? ` ${srv.duration % 60}m` : ""}`
-                          : `${srv.duration} min`
-                        }
+                          : `${srv.duration} min`}
                       </span>
                       {srv.price !== null && srv.price !== undefined && (
                         <span className="bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 px-2.5 py-0.5 rounded-full font-bold">
-                          R$ {srv.price.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                          R${" "}
+                          {srv.price.toLocaleString("pt-BR", {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                          })}
                         </span>
                       )}
                     </div>
@@ -264,7 +297,10 @@ export function ServicosTab({ servicosForm }: ServicosTabProps) {
           </div>
         ) : (
           <div className="p-12 text-center border border-dashed rounded-3xl bg-accent/10">
-            <p className="text-muted-foreground font-semibold">Nenhum serviço cadastrado ainda. Use o formulário à esquerda para começar!</p>
+            <p className="text-muted-foreground font-semibold">
+              Nenhum serviço cadastrado ainda. Use o formulário à esquerda para
+              começar!
+            </p>
           </div>
         )}
       </div>

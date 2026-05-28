@@ -4,7 +4,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { useAuth } from "~/features/auth/queries/use-auth";
 import { useUpdateSettingsMutation } from "~/queries/use-settings";
-import { expedienteSchema, ExpedienteFormValues } from "../schemas/settings-schemas";
+import {
+  expedienteSchema,
+  ExpedienteFormValues,
+} from "../schemas/settings-schemas";
 
 export function useExpedienteForm() {
   const { user } = useAuth();

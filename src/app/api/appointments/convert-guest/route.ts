@@ -44,7 +44,7 @@ export async function POST(req: Request) {
       });
     } catch (clerkErr: unknown) {
       console.error("Erro interno do Clerk no createUser:", clerkErr);
-      
+
       const errorPayload = clerkErr as {
         errors?: Array<{ code?: string; message?: string }>;
         message?: string;
@@ -52,14 +52,22 @@ export async function POST(req: Request) {
 
       // Capturar mensagens de erro específicas do Clerk (ex: email já cadastrado, senha fraca, etc.)
       const isDuplicateEmail = errorPayload.errors?.some(
-        (e) => e.code === "form_identifier_exists" || e.message?.includes("already exists")
+        (e) =>
+          e.code === "form_identifier_exists" ||
+          e.message?.includes("already exists"),
       );
 
       if (isDuplicateEmail) {
-        return error("Este e-mail já está cadastrado. Tente fazer login ou use outro e-mail.", 400);
+        return error(
+          "Este e-mail já está cadastrado. Tente fazer login ou use outro e-mail.",
+          400,
+        );
       }
 
-      const errorMessage = errorPayload.errors?.[0]?.message || errorPayload.message || "Erro desconhecido ao criar usuário no Clerk.";
+      const errorMessage =
+        errorPayload.errors?.[0]?.message ||
+        errorPayload.message ||
+        "Erro desconhecido ao criar usuário no Clerk.";
       return error(errorMessage, 400);
     }
   } catch (err: unknown) {

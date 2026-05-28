@@ -9,7 +9,12 @@ export interface SettingsPayload {
   brandLogo?: string | null;
 }
 
-export async function updateSettings(payload: SettingsPayload): Promise<ApiResponse<SettingsPayload>> {
-  const response = await apiClient.put<ApiResponse<SettingsPayload>>("/settings", payload);
+export async function updateSettings(
+  payload: SettingsPayload,
+): Promise<ApiResponse<SettingsPayload>> {
+  const response = await apiClient.put<ApiResponse<SettingsPayload>>(
+    "/settings",
+    payload,
+  );
   return response as unknown as ApiResponse<SettingsPayload>;
 }

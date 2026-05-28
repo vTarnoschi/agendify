@@ -9,11 +9,18 @@ import { AppointmentsList } from "~/features/dashboard/components/AppointmentsLi
 import { DashboardSkeleton } from "~/features/dashboard/components/DashboardSkeleton";
 import { Alert, AlertDescription } from "~/components/ui/alert";
 
+import { GoogleCalendarAlert } from "~/features/dashboard/components/GoogleCalendarAlert";
+
 // Code Splitting (Lazy Loading) do gráfico semanal, otimizando o bundle de renderização inicial
-const MovementChart = dynamic(() => import("~/features/dashboard/components/MovementChart"), {
-  ssr: false,
-  loading: () => <div className="h-80 bg-accent/30 rounded-2xl animate-pulse" />,
-});
+const MovementChart = dynamic(
+  () => import("~/features/dashboard/components/MovementChart"),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="h-80 bg-accent/30 rounded-2xl animate-pulse" />
+    ),
+  },
+);
 
 export default function DashboardPage() {
   const state = useDashboardState();
@@ -26,7 +33,10 @@ export default function DashboardPage() {
   if (!isAuthenticated) {
     return (
       <div className="max-w-md mx-auto mt-20 flex flex-col gap-4 text-center animate-in fade-in duration-300">
-        <Alert variant="destructive" className="flex flex-col gap-3 items-center justify-center text-center p-6">
+        <Alert
+          variant="destructive"
+          className="flex flex-col gap-3 items-center justify-center text-center p-6"
+        >
           <AlertCircle className="h-10 w-10 text-destructive" />
           <h2 className="text-xl font-bold">Não autenticado</h2>
           <AlertDescription className="text-muted-foreground">
@@ -41,6 +51,9 @@ export default function DashboardPage() {
     <div className="flex flex-col gap-8 p-6 max-w-7xl mx-auto animate-in fade-in duration-300">
       {/* Cabeçalho de Saudação & Links da Agenda */}
       <DashboardHeader state={state} />
+
+      {/* Alerta de Conexão com Google Calendar */}
+      <GoogleCalendarAlert />
 
       {/* Grid de Métricas Principais Calculadas */}
       <MetricCards state={state} />

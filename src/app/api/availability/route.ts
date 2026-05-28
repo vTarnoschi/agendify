@@ -29,7 +29,15 @@ export async function GET(req: NextRequest) {
 
     // Converter a data e verificar se o profissional trabalha nesse dia da semana
     const targetDate = parse(dateStr, "yyyy-MM-dd", new Date());
-    const daysOfWeek = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
+    const daysOfWeek = [
+      "sunday",
+      "monday",
+      "tuesday",
+      "wednesday",
+      "thursday",
+      "friday",
+      "saturday",
+    ];
     const dayOfWeekName = daysOfWeek[targetDate.getDay()];
 
     // Se o profissional não trabalhar nesse dia da semana, retorna lista vazia
@@ -39,7 +47,7 @@ export async function GET(req: NextRequest) {
 
     // Determinar a duração do slot de acordo com o serviço escolhido
     let slotDuration = 30; // 30 minutos padrão de fallback
-    if (serviceId && serviceId !== "default") {
+    if (serviceId && /^[0-9a-fA-F]{24}$/.test(serviceId)) {
       const service = await prisma.service.findUnique({
         where: { id: serviceId },
         select: { duration: true },
@@ -55,16 +63,21 @@ export async function GET(req: NextRequest) {
       const client = await clerkClient();
       const oauthResponse = await client.users.getUserOauthAccessToken(
         provider.clerkId,
-        "oauth_google"
+        "oauth_google",
       );
 
       googleToken = oauthResponse.data[0]?.token || null;
     } catch (oauthErr: unknown) {
       const err = oauthErr as { status?: number; message?: string };
       if (err?.status === 422) {
-        console.warn(`[Aviso] O profissional (${provider.slug}) não possui a integração com o Google Calendar vinculada.`);
+        console.warn(
+          `[Aviso] O profissional (${provider.slug}) não possui a integração com o Google Calendar vinculada.`,
+        );
       } else {
-        console.warn("Erro ao buscar token do Google OAuth para o provider:", err?.message || oauthErr);
+        console.warn(
+          "Erro ao buscar token do Google OAuth para o provider:",
+          err?.message || oauthErr,
+        );
       }
     }
 
@@ -98,7 +111,10 @@ export async function GET(req: NextRequest) {
           }));
         }
       } catch (calErr) {
-        console.error("Erro ao consultar a API FreeBusy do Google Calendar:", calErr);
+        console.error(
+          "Erro ao consultar a API FreeBusy do Google Calendar:",
+          calErr,
+        );
       }
     }
 

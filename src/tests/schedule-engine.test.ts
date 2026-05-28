@@ -95,4 +95,34 @@ describe("Schedule Engine", () => {
     // iter 2: 09:00 as 10:00. Conflita! (09:00 < 09:15 && 10:00 > 09:00 => true)
     expect(slots).toEqual(["08:00"]);
   });
+
+  it("deve tratar transições de timezone e fusos", () => {
+    // A simulação simples que garante que o motor respeita a Date passada.
+    // Em produção, a formatação lida com UTC.
+    const slots = calculateAvailableSlots({
+      targetDate: new Date("2026-05-22T00:00:00Z"),
+      slotDuration: 60,
+      workStart: "08:00",
+      workEnd: "10:00",
+      busySlots: [],
+      now: new Date("2026-05-21T00:00:00Z"),
+    });
+
+    // Se comportaria igual
+    expect(slots).toEqual(["08:00", "09:00"]);
+  });
+
+  it("deve lidar com anos bissextos", () => {
+    const leapYearDate = new Date("2024-02-29T12:00:00");
+    const slots = calculateAvailableSlots({
+      targetDate: leapYearDate,
+      slotDuration: 30,
+      workStart: "08:00",
+      workEnd: "09:00",
+      busySlots: [],
+      now: new Date("2024-02-28T12:00:00"),
+    });
+
+    expect(slots).toEqual(["08:00", "08:30"]);
+  });
 });

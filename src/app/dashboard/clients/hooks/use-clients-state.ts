@@ -4,9 +4,13 @@ import { useClientsQuery } from "~/queries/use-clients";
 
 export function useClientsState() {
   const { isLoading: authLoading, isAuthenticated } = useAuth();
-  
+
   // React Query Call
-  const { data: clients = [], isLoading: loadingClients, error: clientsError } = useClientsQuery();
+  const {
+    data: clients = [],
+    isLoading: loadingClients,
+    error: clientsError,
+  } = useClientsQuery();
 
   const [searchQuery, setSearchQuery] = useState("");
   const errorMsg = clientsError?.message || "";

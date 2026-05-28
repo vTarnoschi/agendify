@@ -1,5 +1,11 @@
 import { Calendar as CalendarIcon, CalendarDays } from "lucide-react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "~/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "~/components/ui/card";
 import { DashboardStateType } from "../hooks/use-dashboard-state";
 
 interface MovementChartProps {
@@ -7,12 +13,7 @@ interface MovementChartProps {
 }
 
 export default function MovementChart({ state }: MovementChartProps) {
-  const {
-    totalBookings,
-    orderedCounts,
-    orderedLabels,
-    maxCount,
-  } = state;
+  const { totalBookings, orderedCounts, orderedLabels, maxCount } = state;
 
   return (
     <Card className="border shadow-sm h-full">
@@ -21,7 +22,9 @@ export default function MovementChart({ state }: MovementChartProps) {
           <CalendarIcon className="h-5 w-5 text-primary" />
           <span>Movimento Semanal</span>
         </CardTitle>
-        <CardDescription>Distribuição de agendamentos por dia da semana.</CardDescription>
+        <CardDescription>
+          Distribuição de agendamentos por dia da semana.
+        </CardDescription>
       </CardHeader>
       <CardContent className="h-80 flex flex-col justify-end pb-6">
         {totalBookings > 0 ? (
@@ -30,8 +33,8 @@ export default function MovementChart({ state }: MovementChartProps) {
               {orderedCounts.map((count, index) => {
                 const percent = (count / maxCount) * 100;
                 return (
-                  <div 
-                    key={index} 
+                  <div
+                    key={index}
                     className="flex flex-col items-center justify-end flex-1 h-full group relative"
                     role="graphics-symbol"
                     aria-label={`${orderedLabels[index]}: ${count} agendamentos`}
@@ -40,9 +43,9 @@ export default function MovementChart({ state }: MovementChartProps) {
                     <span className="absolute -top-7 text-[11px] font-bold bg-primary text-primary-foreground px-1.5 py-0.5 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 shadow-sm pointer-events-none whitespace-nowrap z-10">
                       {count} agend.
                     </span>
-                    
+
                     {/* Barra do gráfico com animação */}
-                    <div 
+                    <div
                       style={{ height: `${percent}%` }}
                       className="w-full max-w-[24px] bg-primary/25 group-hover:bg-primary rounded-t-md transition-all duration-300"
                     >

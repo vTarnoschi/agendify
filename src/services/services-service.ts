@@ -29,14 +29,25 @@ export async function getServices(): Promise<ServiceType[]> {
   return result.data || [];
 }
 
-export async function createService(payload: ServicePayload): Promise<ServiceType> {
-  const response = await apiClient.post<ApiResponse<ServiceType>>("/services", payload);
+export async function createService(
+  payload: ServicePayload,
+): Promise<ServiceType> {
+  const response = await apiClient.post<ApiResponse<ServiceType>>(
+    "/services",
+    payload,
+  );
   const result = response as unknown as ApiResponse<ServiceType>;
   return result.data;
 }
 
-export async function updateService(id: string, payload: ServicePayload): Promise<ServiceType> {
-  const response = await apiClient.put<ApiResponse<ServiceType>>(`/services/${id}`, payload);
+export async function updateService(
+  id: string,
+  payload: ServicePayload,
+): Promise<ServiceType> {
+  const response = await apiClient.put<ApiResponse<ServiceType>>(
+    `/services/${id}`,
+    payload,
+  );
   const result = response as unknown as ApiResponse<ServiceType>;
   return result.data;
 }

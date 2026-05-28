@@ -18,9 +18,13 @@ export const serviceSchema = z.object({
   name: z.string().min(2, {
     message: "O nome do serviço deve ter pelo menos 2 caracteres.",
   }),
-  description: z.string().max(200, {
-    message: "A descrição deve ter no máximo 200 caracteres.",
-  }).optional().nullable(),
+  description: z
+    .string()
+    .max(200, {
+      message: "A descrição deve ter no máximo 200 caracteres.",
+    })
+    .optional()
+    .nullable(),
   price: z.string().optional().nullable(),
   duration: z.string(),
 });

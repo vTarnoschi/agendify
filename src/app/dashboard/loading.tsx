@@ -7,7 +7,7 @@ export default function DashboardLoading() {
       <div className="relative flex items-center justify-center">
         {/* Glow de fundo */}
         <div className="absolute h-24 w-24 bg-primary/10 rounded-full blur-xl animate-pulse" />
-        
+
         {/* Logo Card */}
         <div className="relative h-16 w-16 bg-primary/10 text-primary border border-primary/20 rounded-2xl flex items-center justify-center shadow-lg shadow-primary/5 animate-bounce duration-1000">
           <CalendarCheck className="h-8 w-8" />
@@ -16,7 +16,7 @@ export default function DashboardLoading() {
 
       {/* Título e Status */}
       <div className="flex flex-col items-center gap-2 text-center">
-        <span className="text-2xl font-extrabold tracking-tight bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text text-transparent animate-pulse">
+        <span className="text-2xl font-extrabold tracking-tight bg-linear-to-r from-foreground to-foreground/80 bg-clip-text text-transparent animate-pulse">
           Agendify
         </span>
         <div className="flex items-center gap-2 text-sm text-muted-foreground font-semibold">

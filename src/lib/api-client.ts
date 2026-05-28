@@ -12,7 +12,7 @@ apiClient.interceptors.response.use(
   (error) => {
     console.error("Erro na API:", error.response?.data || error.message);
     return Promise.reject(error);
-  }
+  },
 );
 
 export default apiClient;

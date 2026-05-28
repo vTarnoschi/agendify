@@ -13,7 +13,11 @@ interface BookingNotesProps {
   isLoaded: boolean;
 }
 
-export function BookingNotes({ form, isSignedIn, isLoaded }: BookingNotesProps) {
+export function BookingNotes({
+  form,
+  isSignedIn,
+  isLoaded,
+}: BookingNotesProps) {
   const {
     notes,
     setNotes,
@@ -66,7 +70,7 @@ export function BookingNotes({ form, isSignedIn, isLoaded }: BookingNotesProps) 
         <Button
           onClick={handleAction}
           disabled={!selectedTime || isSubmitting}
-          className="w-full bg-[var(--brand-color)] hover:bg-[var(--brand-color)]/90 disabled:opacity-50 text-white font-bold h-12 rounded-xl cursor-pointer shadow-sm text-sm flex items-center justify-center gap-2"
+          className="w-full bg-primary hover:bg-primary/90 disabled:opacity-50 text-primary-foreground font-bold h-12 rounded-xl cursor-pointer shadow-sm text-sm flex items-center justify-center gap-2"
         >
           {isSubmitting ? (
             <>

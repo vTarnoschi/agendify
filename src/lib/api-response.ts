@@ -19,7 +19,7 @@ export function created(req: Request | NextRequest, resourceId: string) {
 export function error(
   message: string,
   status: number = 500,
-  error?: string | { field: string; message: string }[]
+  error?: string | { field: string; message: string }[],
 ) {
   return NextResponse.json({ success: false, message, error }, { status });
 }
@@ -31,6 +31,6 @@ export function failure(message: string, error: ApiError[] = [], status = 400) {
       message,
       error,
     },
-    { status }
+    { status },
   );
 }

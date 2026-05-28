@@ -25,11 +25,18 @@ export function ClientsHeader({ state }: ClientsHeaderProps) {
             <span>Clientes</span>
           </h1>
           <p className="text-muted-foreground font-medium">
-            Gerencie sua carteira de clientes ativos e visualize o nível de fidelidade.
+            Gerencie sua carteira de clientes ativos e visualize o nível de
+            fidelidade.
           </p>
         </div>
-        
-        <Button variant="outline" size="sm" onClick={handleRefresh} disabled={loading} className="cursor-pointer flex items-center gap-2">
+
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={handleRefresh}
+          disabled={loading}
+          className="cursor-pointer flex items-center gap-2"
+        >
           <RefreshCw className={`h-4 w-4 ${loading ? "animate-spin" : ""}`} />
           Atualizar Lista
         </Button>

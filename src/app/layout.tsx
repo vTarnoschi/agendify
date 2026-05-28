@@ -53,6 +53,8 @@ export default function RootLayout({
           },
         },
         formFieldLabel__emailAddress: "Email",
+        formFieldInputPlaceholder__firstName: "Digite seu nome",
+        formFieldInputPlaceholder__lastName: "Digite seu sobrenome",
         formFieldInputPlaceholder__emailAddress: "Digite seu email",
         formFieldInputPlaceholder__signUpPassword: "Digite sua senha",
       }}
@@ -68,17 +70,12 @@ export default function RootLayout({
         },
       }}
     >
-      <html lang="pt-BR" suppressHydrationWarning>
+      <html lang="pt-BR" suppressHydrationWarning className="dark">
         <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+          className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-foreground`}
         >
           <ReactQueryProvider>
-            <ThemeProvider
-              enableSystem
-              attribute="class"
-              defaultTheme="light"
-              disableTransitionOnChange
-            >
+            <ThemeProvider>
               {children}
               <Toaster />
             </ThemeProvider>

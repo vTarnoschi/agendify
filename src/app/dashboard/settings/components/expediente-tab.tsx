@@ -1,8 +1,21 @@
 import { Clock, Calendar, Plus, Save, Loader2 } from "lucide-react";
 import { Button } from "~/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "~/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "~/components/ui/card";
 import { Input } from "~/components/ui/input";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "~/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "~/components/ui/form";
 import { ExpedienteFormType } from "../hooks/use-expediente-form";
 
 const DAYS_MAP = [
@@ -20,26 +33,25 @@ interface ExpedienteTabProps {
 }
 
 export function ExpedienteTab({ expedienteForm }: ExpedienteTabProps) {
-  const {
-    form,
-    handleSubmit,
-    handleToggleDay,
-    errorMsg,
-    loading,
-  } = expedienteForm;
+  const { form, handleSubmit, handleToggleDay, errorMsg, loading } =
+    expedienteForm;
 
   const workingDays = form.watch("workingDays") || [];
 
   return (
     <Card className="border shadow-sm">
       <CardHeader>
-        <CardTitle className="text-2xl font-bold">Definir Jornada de Trabalho</CardTitle>
-        <CardDescription>Escolha os dias e horários em que os clientes podem agendar horários com você.</CardDescription>
+        <CardTitle className="text-2xl font-bold">
+          Definir Jornada de Trabalho
+        </CardTitle>
+        <CardDescription>
+          Escolha os dias e horários em que os clientes podem agendar horários
+          com você.
+        </CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>
           <form onSubmit={handleSubmit} className="flex flex-col gap-6">
-            
             {/* Dias de trabalho */}
             <FormField
               control={form.control}
@@ -68,12 +80,16 @@ export function ExpedienteTab({ expedienteForm }: ExpedienteTabProps) {
                             }`}
                           >
                             <span>{day.label}</span>
-                            <div className={`h-5 w-5 rounded-md border flex items-center justify-center transition-all ${
-                              isChecked 
-                                ? "bg-primary border-primary text-primary-foreground" 
-                                : "border-muted-foreground/30"
-                            }`}>
-                              {isChecked && <Plus className="h-3.5 w-3.5 stroke-[3px]" />}
+                            <div
+                              className={`h-5 w-5 rounded-md border flex items-center justify-center transition-all ${
+                                isChecked
+                                  ? "bg-primary border-primary text-primary-foreground"
+                                  : "border-muted-foreground/30"
+                              }`}
+                            >
+                              {isChecked && (
+                                <Plus className="h-3.5 w-3.5 stroke-[3px]" />
+                              )}
                             </div>
                           </button>
                         );
@@ -87,7 +103,6 @@ export function ExpedienteTab({ expedienteForm }: ExpedienteTabProps) {
 
             {/* Horários */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 border-t border-border pt-6">
-              
               <FormField
                 control={form.control}
                 name="workStart"
@@ -98,11 +113,7 @@ export function ExpedienteTab({ expedienteForm }: ExpedienteTabProps) {
                       <span>Horário de Início do Expediente</span>
                     </FormLabel>
                     <FormControl>
-                      <Input
-                        type="time"
-                        {...field}
-                        className="h-12"
-                      />
+                      <Input type="time" {...field} className="h-12" />
                     </FormControl>
                     <FormMessage className="text-xs font-semibold" />
                   </FormItem>
@@ -119,11 +130,7 @@ export function ExpedienteTab({ expedienteForm }: ExpedienteTabProps) {
                       <span>Horário de Término do Expediente</span>
                     </FormLabel>
                     <FormControl>
-                      <Input
-                        type="time"
-                        {...field}
-                        className="h-12"
-                      />
+                      <Input type="time" {...field} className="h-12" />
                     </FormControl>
                     <FormMessage className="text-xs font-semibold" />
                   </FormItem>
@@ -139,7 +146,6 @@ export function ExpedienteTab({ expedienteForm }: ExpedienteTabProps) {
 
             {/* Ação */}
             <div className="flex items-center justify-end border-t border-border pt-6">
-
               <Button
                 type="submit"
                 disabled={loading}

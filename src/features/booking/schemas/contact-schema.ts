@@ -8,7 +8,7 @@ export const contactSchema = z.object({
     .min(1, "Telefone é obrigatório")
     .refine(
       (val) => val.replace(/\D/g, "").length >= 10,
-      "Telefone inválido — informe DDD + número (ex: (11) 99999-9999)"
+      "Telefone inválido — informe DDD + número (ex: (11) 99999-9999)",
     ),
 });
 

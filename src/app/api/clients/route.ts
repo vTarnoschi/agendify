@@ -52,7 +52,7 @@ export async function GET() {
 
     for (const appt of appointments) {
       const client = appt.user;
-      
+
       if (client) {
         if (!clientsMap[client.id]) {
           clientsMap[client.id] = {
@@ -87,7 +87,7 @@ export async function GET() {
 
     // Converter para array e ordenar por mais agendamentos (fidelidade)
     const uniqueClients = Object.values(clientsMap).sort(
-      (a, b) => b.totalBookings - a.totalBookings
+      (a, b) => b.totalBookings - a.totalBookings,
     );
 
     return success(uniqueClients);

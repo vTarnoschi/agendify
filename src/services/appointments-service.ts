@@ -38,13 +38,16 @@ export interface AppointmentsResponseData {
 }
 
 export async function getAppointments(): Promise<AppointmentsResponseData> {
-  const response = await apiClient.get<ApiResponse<AppointmentsResponseData>>("/appointments");
+  const response =
+    await apiClient.get<ApiResponse<AppointmentsResponseData>>("/appointments");
   const result = response as unknown as ApiResponse<AppointmentsResponseData>;
   return result.data;
 }
 
 export async function cancelAppointment(id: string): Promise<boolean> {
-  const response = await apiClient.delete<ApiResponse<null>>(`/appointments/${id}`);
+  const response = await apiClient.delete<ApiResponse<null>>(
+    `/appointments/${id}`,
+  );
   const result = response as unknown as ApiResponse<null>;
   return result.success;
 }
